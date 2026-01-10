@@ -28,3 +28,17 @@ Homestead.json
 .env.production
 .phpactor.json
 auth.json
+
+# Vue.js build output
+/dist
+/build
+
+# System and IDE specific
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# NPM or Yarn lock files
+yarn.lock
+package-lock.json
