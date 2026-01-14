@@ -3,7 +3,7 @@
     <div class="container navbar-container">
       <!-- Logo -->
       <router-link to="/" class="navbar-brand">
-        <span class="logo-text">Dapur Nyonya</span>
+        <div class="logo-box">🍽️</div>
       </router-link>
 
       <!-- Mobile Menu Toggle -->
@@ -17,13 +17,12 @@
         <li><router-link to="/layanan" class="nav-link" @click="closeMenu">Layanan Kami</router-link></li>
         <li><router-link to="/tentang" class="nav-link" @click="closeMenu">Tentang Kami</router-link></li>
         <li><router-link to="/testimoni" class="nav-link" @click="closeMenu">Testimoni</router-link></li>
-        <li>
-          <router-link to="/hubungi" class="nav-link nav-cta" @click="closeMenu">
-            Pesan Sekarang
-          </router-link>
-        </li>
+        <li><router-link to="/hubungi" class="nav-link" @click="closeMenu">Hubungi Kami</router-link></li>
       </ul>
     </div>
+
+    <!-- Red Line -->
+    <div class="navbar-line"></div>
   </nav>
 </template>
 
@@ -60,38 +59,41 @@ export default {
   left: 0;
   right: 0;
   z-index: 1000;
-  background: transparent;
+  background: white;
   transition: all 0.3s ease;
-  padding: 1rem 0;
 }
 
 .navbar-scrolled {
-  background: rgba(255, 255, 255, 0.98);
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  padding: 0.5rem 0;
 }
 
 .navbar-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0.75rem 0;
 }
 
 .navbar-brand {
-  font-family: 'Georgia', serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--primary);
+  display: flex;
+  align-items: center;
 }
 
-.navbar-scrolled .navbar-brand {
-  color: var(--primary-dark);
+.logo-box {
+  width: 50px;
+  height: 50px;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background: #f9f9f9;
 }
 
 .navbar-menu {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 2.5rem;
 }
 
 .nav-link {
@@ -99,39 +101,25 @@ export default {
   color: var(--text-primary);
   transition: color 0.3s ease;
   position: relative;
+  padding: 0.5rem 0;
 }
 
 .nav-link:hover {
   color: var(--primary);
 }
 
-.nav-link.router-link-active {
-  color: var(--primary);
-}
-
-.nav-link.router-link-active::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 100%;
-  height: 2px;
+.nav-link.router-link-active,
+.nav-link.router-link-exact-active {
   background: var(--primary);
-}
-
-.nav-cta {
-  background: var(--primary);
-  color: white !important;
-  padding: 0.5rem 1.25rem;
+  color: white;
+  padding: 0.5rem 1rem;
   border-radius: var(--radius-md);
 }
 
-.nav-cta:hover {
-  background: var(--primary-dark);
-}
-
-.nav-cta.router-link-active::after {
-  display: none;
+/* Red Line at bottom of navbar */
+.navbar-line {
+  height: 4px;
+  background: var(--primary);
 }
 
 /* Mobile Toggle */
@@ -187,7 +175,7 @@ export default {
 
   .navbar-menu {
     position: fixed;
-    top: 60px;
+    top: 75px;
     left: 0;
     right: 0;
     background: white;
@@ -210,11 +198,6 @@ export default {
   .nav-link {
     display: block;
     padding: 0.5rem 0;
-  }
-
-  .nav-cta {
-    text-align: center;
-    display: block;
   }
 }
 </style>

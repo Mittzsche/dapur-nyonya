@@ -2,43 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Testimoni;
+use App\Models\Galeri;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class TestimoniController extends Controller
+class GaleriController extends Controller
 {
     /**
-     * Get all testimoni (Public)
+     * Get all galeri (Public)
      */
     public function index(): JsonResponse
     {
-        $testimoni = Testimoni::where('is_active', true)
+        $galeri = Galeri::where('is_active', true)
             ->orderBy('urutan')
             ->get();
 
         return response()->json([
             'success' => true,
-            'data' => $testimoni,
+            'data' => $galeri,
         ]);
     }
 
     /**
-     * Get all testimoni including inactive (Admin)
+     * Get all galeri including inactive (Admin)
      */
     public function adminIndex(): JsonResponse
     {
-        $testimoni = Testimoni::orderBy('urutan')->get();
+        $galeri = Galeri::orderBy('urutan')->get();
 
         return response()->json([
             'success' => true,
-            'data' => $testimoni,
+            'data' => $galeri,
         ]);
     }
 
     /**
-     * Store new testimoni (Admin)
+     * Store new galeri (Admin)
      */
     public function store(Request $request): JsonResponse
     {
@@ -48,9 +48,9 @@ class TestimoniController extends Controller
             'urutan' => 'nullable|integer',
         ]);
 
-        $path = $request->file('gambar')->store('testimoni', 'public');
+        $path = $request->file('gambar')->store('galeri', 'public');
 
-        $testimoni = Testimoni::create([
+        $galeri = Galeri::create([
             'gambar' => $path,
             'caption' => $request->caption,
             'urutan' => $request->urutan ?? 0,
@@ -59,22 +59,22 @@ class TestimoniController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Testimoni berhasil ditambahkan',
-            'data' => $testimoni,
+            'message' => 'Galeri berhasil ditambahkan',
+            'data' => $galeri,
         ], 201);
     }
 
     /**
-     * Update testimoni (Admin)
+     * Update galeri (Admin)
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        $testimoni = Testimoni::find($id);
+        $galeri = Galeri::find($id);
 
-        if (!$testimoni) {
+        if (!$galeri) {
             return response()->json([
                 'success' => false,
-                'message' => 'Testimoni tidak ditemukan',
+                'message' => 'Galeri tidak ditemukan',
             ], 404);
         }
 
@@ -87,50 +87,50 @@ class TestimoniController extends Controller
 
         if ($request->hasFile('gambar')) {
             // Delete old image
-            Storage::disk('public')->delete($testimoni->gambar);
-            $testimoni->gambar = $request->file('gambar')->store('testimoni', 'public');
+            Storage::disk('public')->delete($galeri->gambar);
+            $galeri->gambar = $request->file('gambar')->store('galeri', 'public');
         }
 
         if ($request->has('caption')) {
-            $testimoni->caption = $request->caption;
+            $galeri->caption = $request->caption;
         }
         if ($request->has('urutan')) {
-            $testimoni->urutan = $request->urutan;
+            $galeri->urutan = $request->urutan;
         }
         if ($request->has('is_active')) {
-            $testimoni->is_active = $request->is_active;
+            $galeri->is_active = $request->is_active;
         }
 
-        $testimoni->save();
+        $galeri->save();
 
         return response()->json([
             'success' => true,
-            'message' => 'Testimoni berhasil diupdate',
-            'data' => $testimoni,
+            'message' => 'Galeri berhasil diupdate',
+            'data' => $galeri,
         ]);
     }
 
     /**
-     * Delete testimoni (Admin)
+     * Delete galeri (Admin)
      */
     public function destroy(int $id): JsonResponse
     {
-        $testimoni = Testimoni::find($id);
+        $galeri = Galeri::find($id);
 
-        if (!$testimoni) {
+        if (!$galeri) {
             return response()->json([
                 'success' => false,
-                'message' => 'Testimoni tidak ditemukan',
+                'message' => 'Galeri tidak ditemukan',
             ], 404);
         }
 
         // Delete image file
-        Storage::disk('public')->delete($testimoni->gambar);
-        $testimoni->delete();
+        Storage::disk('public')->delete($galeri->gambar);
+        $galeri->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Testimoni berhasil dihapus',
+            'message' => 'Galeri berhasil dihapus',
         ]);
     }
 }

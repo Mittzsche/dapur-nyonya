@@ -14,6 +14,9 @@ import AdminProduk from '@/views/admin/Produk.vue'
 import AdminEditProduk from '@/views/admin/EditProduk.vue'
 import AdminPemesanan from '@/views/admin/Pemesanan.vue'
 import AdminPenjualan from '@/views/admin/Penjualan.vue'
+import AdminKonten from '@/views/admin/KontenManagement.vue'
+import AdminTestimoni from '@/views/admin/TestimoniManagement.vue'
+import AdminGaleri from '@/views/admin/GaleriManagement.vue'
 
 const routes = [
     // ==================
@@ -94,6 +97,24 @@ const routes = [
         name: 'AdminPenjualan',
         component: AdminPenjualan,
         meta: { title: 'Laporan Penjualan - Admin Dapur Nyonya', requiresAuth: true }
+    },
+    {
+        path: '/admin/konten',
+        name: 'AdminKonten',
+        component: AdminKonten,
+        meta: { title: 'Kelola Konten - Admin Dapur Nyonya', requiresAuth: true }
+    },
+    {
+        path: '/admin/testimoni',
+        name: 'AdminTestimoni',
+        component: AdminTestimoni,
+        meta: { title: 'Kelola Testimoni - Admin Dapur Nyonya', requiresAuth: true }
+    },
+    {
+        path: '/admin/galeri',
+        name: 'AdminGaleri',
+        component: AdminGaleri,
+        meta: { title: 'Kelola Galeri - Admin Dapur Nyonya', requiresAuth: true }
     },
 
     // Catch-all redirect

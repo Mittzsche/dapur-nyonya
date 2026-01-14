@@ -10,6 +10,10 @@
         <router-link to="/admin/produk" class="nav-item">📦 Produk</router-link>
         <router-link to="/admin/pemesanan" class="nav-item">📋 Pemesanan</router-link>
         <router-link to="/admin/penjualan" class="nav-item">💰 Penjualan</router-link>
+        <div class="nav-divider"></div>
+        <router-link to="/admin/konten" class="nav-item">📝 Konten</router-link>
+        <router-link to="/admin/testimoni" class="nav-item">💬 Testimoni</router-link>
+        <router-link to="/admin/galeri" class="nav-item">🖼️ Galeri</router-link>
       </nav>
       <div class="sidebar-footer">
         <button @click="handleLogout" class="logout-btn">🚪 Logout</button>

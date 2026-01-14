@@ -1,16 +1,22 @@
 /* ================================================
-   DAPUR NYONYA - Main CSS
+   DAPUR NYONYA - Main CSS (Red Theme)
    ================================================ */
 
 /* --- CSS Variables (Design System) --- */
 :root {
-  /* Colors */
-  --primary: #D4A373;
-  --primary-dark: #BC8C5C;
-  --secondary: #4A6741;
-  --secondary-dark: #3A5332;
-  --accent: #E9C46A;
-  --background: #FFF9F0;
+  /* Colors - Red Theme */
+  --primary: #C41E3A;
+  /* Crimson Red */
+  --primary-dark: #A01830;
+  --primary-light: #E8364F;
+  --secondary: #2D2D2D;
+  /* Dark Gray */
+  --secondary-light: #4A4A4A;
+  --accent: #FFD700;
+  /* Gold accent */
+  --background: #FFFFFF;
+  --background-alt: #FFF5F5;
+  /* Light pinkish white */
   --surface: #FFFFFF;
   --text-primary: #2D2D2D;
   --text-secondary: #6B6B6B;
@@ -39,9 +45,9 @@
   --radius-full: 9999px;
 
   /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-  --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
 
   /* Container */
   --container-width: 1200px;
@@ -97,6 +103,18 @@ ul {
   text-align: center;
   margin-bottom: var(--spacing-md);
   color: var(--text-primary);
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.section-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: var(--primary);
+  margin: 0.5rem auto 0;
 }
 
 .section-subtitle {
@@ -114,27 +132,30 @@ ul {
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: none;
+  border: 2px solid transparent;
   font-size: 1rem;
 }
 
 .btn-primary {
   background-color: var(--primary);
   color: var(--text-light);
+  border-color: var(--primary);
 }
 
 .btn-primary:hover {
   background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
   transform: translateY(-2px);
 }
 
 .btn-secondary {
   background-color: var(--secondary);
   color: var(--text-light);
+  border-color: var(--secondary);
 }
 
 .btn-secondary:hover {
-  background-color: var(--secondary-dark);
+  background-color: var(--secondary-light);
   transform: translateY(-2px);
 }
 
@@ -146,6 +167,17 @@ ul {
 
 .btn-outline:hover {
   background-color: var(--primary);
+  color: var(--text-light);
+}
+
+.btn-outline-dark {
+  background-color: transparent;
+  border: 2px solid var(--secondary);
+  color: var(--secondary);
+}
+
+.btn-outline-dark:hover {
+  background-color: var(--secondary);
   color: var(--text-light);
 }
 
@@ -214,14 +246,27 @@ ul {
 }
 
 @media (max-width: 992px) {
-  .grid-4 { grid-template-columns: repeat(2, 1fr); }
-  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
-  .grid-4 { grid-template-columns: 1fr; }
-  .grid-3 { grid-template-columns: 1fr; }
-  .grid-2 { grid-template-columns: 1fr; }
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* --- Forms --- */
@@ -266,13 +311,33 @@ textarea.form-control {
 }
 
 /* --- Utilities --- */
-.text-center { text-align: center; }
-.text-primary { color: var(--primary); }
-.text-secondary { color: var(--secondary); }
-.mt-1 { margin-top: var(--spacing-md); }
-.mt-2 { margin-top: var(--spacing-xl); }
-.mb-1 { margin-bottom: var(--spacing-md); }
-.mb-2 { margin-bottom: var(--spacing-xl); }
+.text-center {
+  text-align: center;
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+.text-secondary {
+  color: var(--secondary);
+}
+
+.mt-1 {
+  margin-top: var(--spacing-md);
+}
+
+.mt-2 {
+  margin-top: var(--spacing-xl);
+}
+
+.mb-1 {
+  margin-bottom: var(--spacing-md);
+}
+
+.mb-2 {
+  margin-bottom: var(--spacing-xl);
+}
 
 /* --- Loading Spinner --- */
 .loading {
@@ -292,7 +357,9 @@ textarea.form-control {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* --- Alert --- */
@@ -336,4 +403,11 @@ textarea.form-control {
 .badge-cancelled {
   background-color: var(--error);
   color: white;
+}
+
+/* --- Divider Line --- */
+.divider {
+  height: 4px;
+  background: var(--primary);
+  margin: 0;
 }

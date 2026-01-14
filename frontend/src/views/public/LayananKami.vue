@@ -3,13 +3,16 @@
     <!-- Page Header -->
     <section class="page-header">
       <div class="container">
-        <h1>Layanan Kami</h1>
-        <p>Pilih paket catering terbaik untuk acara Anda</p>
+        <h1>Kami Melayani</h1>
+        <p>Kami menyediakan catering untuk berbagai kebutuhan acara</p>
       </div>
     </section>
 
+    <!-- Divider Line -->
+    <div class="divider"></div>
+
     <!-- Services List -->
-    <section class="section">
+    <section class="section layanan-section">
       <div class="container">
         <div v-if="loading" class="loading">
           <div class="spinner"></div>
@@ -19,34 +22,17 @@
           <p>Belum ada paket layanan tersedia.</p>
         </div>
 
-        <div v-else class="grid grid-3">
-          <div v-for="layanan in layananList" :key="layanan.id_layanan" class="card service-card">
-            <div class="card-image-placeholder">
-              <span>🍱</span>
+        <div v-else class="layanan-grid">
+          <div v-for="layanan in layananList" :key="layanan.id_layanan" class="layanan-card">
+            <div class="layanan-image-circle">
+              <img v-if="layanan.gambar" :src="getImageUrl(layanan.gambar)" :alt="layanan.nama_paket">
+              <span v-else>🍱</span>
             </div>
-            <div class="card-content">
-              <h3 class="card-title">{{ layanan.nama_paket }}</h3>
-              <p class="card-text">{{ layanan.deskripsi }}</p>
-              <div class="card-footer">
-                <p class="card-price">Rp {{ formatPrice(layanan.harga) }}</p>
-                <router-link to="/hubungi" class="btn btn-primary btn-sm">
-                  Pesan
-                </router-link>
-              </div>
-            </div>
+            <h3 class="layanan-title">{{ layanan.nama_paket }}</h3>
+            <p class="layanan-desc">{{ layanan.deskripsi }}</p>
+            <router-link to="/hubungi" class="btn btn-outline-dark btn-sm">Hubungi Kami</router-link>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- Custom Order CTA -->
-    <section class="custom-order">
-      <div class="container">
-        <h2>Butuh Paket Custom?</h2>
-        <p>Hubungi kami untuk menyesuaikan menu sesuai kebutuhan dan budget Anda</p>
-        <router-link to="/hubungi" class="btn btn-primary btn-lg">
-          Konsultasi Gratis
-        </router-link>
       </div>
     </section>
   </div>
@@ -77,8 +63,9 @@ export default {
         this.loading = false
       }
     },
-    formatPrice(price) {
-      return parseFloat(price).toLocaleString('id-ID')
+    getImageUrl(path) {
+      if (!path) return ''
+      return `http://localhost:8000/storage/${path}`
     }
   }
 }
@@ -86,58 +73,95 @@ export default {
 
 <style scoped>
 .page-header {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  color: white;
+  background: white;
   text-align: center;
-  padding: 8rem 0 4rem;
+  padding: 8rem 0 2rem;
 }
 
 .page-header h1 {
-  font-family: 'Georgia', serif;
+  font-family: var(--font-heading);
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.page-header h1::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: var(--primary);
+  margin: 0.5rem auto 0;
 }
 
 .page-header p {
-  opacity: 0.9;
+  color: var(--text-secondary);
 }
 
-.card-image-placeholder {
-  height: 200px;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+.divider {
+  height: 4px;
+  background: var(--primary);
+}
+
+.layanan-section {
+  padding: 4rem 0;
+  background: white;
+  min-height: 70vh;
+}
+
+.layanan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.layanan-card {
+  border: 2px solid var(--border);
+  padding: 2rem;
+  text-align: center;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.layanan-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+.layanan-image-circle {
+  width: 100px;
+  height: 100px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 4rem;
+  margin: 0 auto 1.5rem;
+  background: #f9f9f9;
 }
 
-.service-card .card-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+.layanan-image-circle span {
+  font-size: 3rem;
 }
 
-.service-card .card-text {
-  flex: 1;
+.layanan-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.layanan-desc {
+  color: var(--text-secondary);
   font-size: 0.9rem;
-}
-
-.card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border);
-}
-
-.card-footer .card-price {
-  margin: 0;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  min-height: 60px;
 }
 
 .btn-sm {
-  padding: 0.4rem 1rem;
-  font-size: 0.9rem;
+  padding: 0.5rem 1.5rem;
+  font-size: 0.85rem;
 }
 
 .empty-state {
@@ -146,21 +170,23 @@ export default {
   color: var(--text-secondary);
 }
 
-.custom-order {
-  background: var(--secondary);
-  color: white;
-  text-align: center;
-  padding: 4rem 0;
+@media (max-width: 992px) {
+  .layanan-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.custom-order h2 {
-  font-family: 'Georgia', serif;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.custom-order p {
-  margin-bottom: 1.5rem;
-  opacity: 0.9;
+@media (max-width: 768px) {
+  .layanan-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .page-header {
+    padding: 6rem 0 2rem;
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
 }
 </style>

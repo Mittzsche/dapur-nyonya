@@ -2,238 +2,252 @@
   <div class="tentang-page">
     <!-- Page Header -->
     <section class="page-header">
-      <div class="container">
-        <h1>Tentang Kami</h1>
-        <p>Mengenal lebih dekat Dapur Nyonya</p>
-      </div>
-    </section>
-
-    <!-- About Content -->
-    <section class="section about-content">
-      <div class="container">
-        <div class="about-grid">
-          <div class="about-image">
-            <div class="image-placeholder">
-              <span>👩‍🍳</span>
-            </div>
+      <div class="container header-grid">
+        <div class="header-text">
+          <h1>{{ content.title || 'Dapur Nyonya' }}</h1>
+          <p class="header-subtitle">
+            {{ content.subtitle || 'Dapur Nyonya Catering didirikan pada tahun 1984 dengan tujuan utama memberikan pelayanan terbaik serta menjadi mitra terpercaya dalam penyelenggaraan berbagai acara dan pesta.' }}
+          </p>
+        </div>
+        <div class="header-image">
+          <div v-if="content.owner_image" class="owner-image-real">
+            <img :src="getImageUrl(content.owner_image)" alt="Owner Dapur Nyonya">
           </div>
-          <div class="about-text">
-            <h2>Dapur Nyonya - Catering Berkualitas Sukabumi</h2>
-            <p>
-              Dapur Nyonya adalah layanan catering profesional yang berbasis di Sukabumi, 
-              Jawa Barat. Didirikan dengan passion untuk menyajikan hidangan berkualitas 
-              tinggi dengan cita rasa khas Indonesia yang autentik.
-            </p>
-            <p>
-              Kami melayani berbagai jenis acara mulai dari pesta pernikahan, arisan, 
-              meeting kantor, seminar, hingga acara keluarga. Dengan pengalaman bertahun-tahun 
-              di industri kuliner, kami berkomitmen untuk memberikan pelayanan terbaik 
-              dengan harga yang terjangkau.
-            </p>
-            <p>
-              Setiap hidangan yang kami sajikan diolah dengan bahan-bahan segar dan 
-              berkualitas, dimasak oleh tim chef berpengalaman, serta dikemas dengan 
-              standar kebersihan yang tinggi.
-            </p>
+          <div v-else class="owner-image">
+            <span>👩‍🍳</span>
+            <p>Foto Owner</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Values Section -->
-    <section class="section values-section" style="background: white;">
-      <div class="container">
-        <h2 class="section-title">Nilai-Nilai Kami</h2>
-        
-        <div class="grid grid-3">
-          <div class="value-card">
-            <div class="value-icon">💯</div>
-            <h3>Kualitas</h3>
-            <p>Tidak ada kompromi untuk kualitas rasa dan bahan makanan yang kami gunakan</p>
-          </div>
-          <div class="value-card">
-            <div class="value-icon">🤝</div>
-            <h3>Kepercayaan</h3>
-            <p>Menjaga kepercayaan pelanggan adalah prioritas utama kami</p>
-          </div>
-          <div class="value-card">
-            <div class="value-icon">❤️</div>
-            <h3>Dedikasi</h3>
-            <p>Setiap hidangan dimasak dengan cinta dan dedikasi penuh</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- Divider Line -->
+    <div class="divider"></div>
 
-    <!-- Vision Mission -->
-    <section class="section vision-mission">
+    <!-- Latar Belakang Section -->
+    <section class="section latar-belakang">
       <div class="container">
-        <div class="vm-grid">
-          <div class="vm-card">
-            <h3>🎯 Visi</h3>
+        <div class="latar-box">
+          <h2>Latar Belakang</h2>
+          
+          <div v-if="content.latar_belakang" v-html="formattedLatarBelakang"></div>
+          <div v-else>
             <p>
-              Menjadi layanan catering terpercaya dan pilihan utama masyarakat Sukabumi 
-              dan sekitarnya dalam menyediakan hidangan berkualitas untuk setiap momen spesial.
+              Sebagai penyedia layanan jasa boga profesional, Dapur Nyonya Catering hadir dengan komitmen untuk 
+              memberikan pelayanan terbaik dan pengalaman kuliner yang berkesan di setiap acara. Sejak awal berdirinya, 
+              kami berfokus untuk menghadirkan sajian lezat, tampilan yang elegan, serta pelayanan yang ramah dan berkelas 
+              bagi setiap pelanggan.
+            </p>
+
+            <p>
+              Didukung oleh tim ahli dan tenaga profesional di bidang kuliner, Dapur Nyonya Catering menggabungkan cita rasa 
+              tradisional dengan sentuhan modern. Kami memahami bahwa setiap acara memiliki karakter dan kebutuhan yang 
+              berbeda, sehingga setiap hidangan disiapkan dengan menyesuaikan tema, konsep, serta selera pelanggan baik 
+              untuk pesta pernikahan, acara perusahaan, gathering keluarga, maupun perjamuan resmi.
+            </p>
+
+            <p>
+              Kami menawarkan beragam pilihan menu Nusantara dan internasional yang dikreasikan dengan perpaduan bahan 
+              berkualitas tinggi dan bumbu pilihan khas Dapur Nyonya. Setiap sajian diolah dengan teliti untuk menghasilkan 
+              rasa yang autentik dan tampilan yang menarik, sehingga memberikan kesan istimewa bagi para tamu yang hadir.
+            </p>
+
+            <p>
+              Prinsip utama kami adalah "segar, higienis, dan berkualitas". Seluruh proses mulai dari pemilihan bahan baku, 
+              pengolahan makanan, hingga penyajian dilakukan dengan standar kebersihan yang tinggi dan pengawasan ketat 
+              untuk menjamin kualitas terbaik di setiap hidangan.
+            </p>
+
+            <p>
+              Dengan cita rasa khas dan tampilan yang menawan, Dapur Nyonya Catering selalu berupaya menghadirkan 
+              inovasi dalam setiap penyajian. Kami ingin memastikan bahwa setiap acara yang Anda percayakan kepada kami 
+              bukan sekadar pesta, melainkan menjadi momen berharga yang dipenuhi kelezatan dan kebahagiaan.
             </p>
           </div>
-          <div class="vm-card">
-            <h3>🚀 Misi</h3>
-            <ul>
-              <li>Menyajikan hidangan dengan cita rasa terbaik</li>
-              <li>Memberikan pelayanan ramah dan profesional</li>
-              <li>Menjaga kebersihan dan kesegaran makanan</li>
-              <li>Menawarkan harga kompetitif tanpa mengurangi kualitas</li>
-            </ul>
-          </div>
         </div>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="cta-section">
-      <div class="container">
-        <h2>Mari Bekerja Sama</h2>
-        <p>Percayakan kebutuhan catering acara Anda kepada kami</p>
-        <router-link to="/hubungi" class="btn btn-primary btn-lg">
-          Hubungi Kami
-        </router-link>
       </div>
     </section>
   </div>
 </template>
 
 <script>
+import kontenService from '@/services/kontenService'
+
 export default {
-  name: 'TentangKami'
+  name: 'TentangKami',
+  data() {
+    return {
+      content: {
+        title: '',
+        subtitle: '',
+        owner_image: '',
+        latar_belakang: ''
+      }
+    }
+  },
+  computed: {
+    formattedLatarBelakang() {
+      if (!this.content.latar_belakang) return ''
+      // Convert line breaks to paragraphs
+      const paragraphs = this.content.latar_belakang.split('\n\n').filter(p => p.trim())
+      return paragraphs.map(p => `<p>${p}</p>`).join('')
+    }
+  },
+  async mounted() {
+    await this.loadContent()
+  },
+  methods: {
+    async loadContent() {
+      try {
+        const response = await kontenService.getAll()
+        const konten = response.data.data
+
+        if (konten.tentang_title) this.content.title = konten.tentang_title.value
+        if (konten.tentang_subtitle) this.content.subtitle = konten.tentang_subtitle.value
+        if (konten.tentang_owner_image) this.content.owner_image = konten.tentang_owner_image.value
+        if (konten.tentang_latar_belakang) this.content.latar_belakang = konten.tentang_latar_belakang.value
+      } catch (error) {
+        console.error('Error loading content:', error)
+      }
+    },
+    getImageUrl(path) {
+      if (!path) return ''
+      return `http://localhost:8000/storage/${path}`
+    }
+  }
 }
 </script>
 
 <style scoped>
 .page-header {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  color: white;
-  text-align: center;
-  padding: 8rem 0 4rem;
+  background: white;
+  padding: 8rem 0 2rem;
 }
 
-.page-header h1 {
-  font-family: 'Georgia', serif;
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.about-grid {
+.header-grid {
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
+  grid-template-columns: 1fr auto;
   gap: 3rem;
   align-items: center;
 }
 
-.image-placeholder {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  border-radius: var(--radius-lg);
-  height: 350px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 8rem;
-}
-
-.about-text h2 {
-  font-family: 'Georgia', serif;
-  color: var(--primary);
-  margin-bottom: 1.5rem;
-}
-
-.about-text p {
-  margin-bottom: 1rem;
-  line-height: 1.8;
-  color: var(--text-secondary);
-}
-
-.value-card {
-  text-align: center;
-  padding: 2rem;
-  background: var(--background);
-  border-radius: var(--radius-lg);
-}
-
-.value-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-.value-card h3 {
-  margin-bottom: 0.5rem;
-}
-
-.value-card p {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-}
-
-.vision-mission {
-  background: var(--background);
-}
-
-.vm-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-}
-
-.vm-card {
-  background: white;
-  padding: 2rem;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-}
-
-.vm-card h3 {
-  font-size: 1.25rem;
+.header-text h1 {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
   margin-bottom: 1rem;
   color: var(--text-primary);
 }
 
-.vm-card p, .vm-card li {
+.header-subtitle {
   color: var(--text-secondary);
-  line-height: 1.8;
+  max-width: 600px;
+  line-height: 1.6;
+  font-size: 0.95rem;
 }
 
-.vm-card ul {
-  padding-left: 1.25rem;
-  list-style: disc;
+.owner-image {
+  width: 200px;
+  height: 250px;
+  border: 2px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f9f9f9;
 }
 
-.vm-card li {
+.owner-image span {
+  font-size: 4rem;
   margin-bottom: 0.5rem;
 }
 
-.cta-section {
-  background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
-  color: white;
-  text-align: center;
-  padding: 4rem 0;
+.owner-image p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
 
-.cta-section h2 {
-  font-family: 'Georgia', serif;
-  font-size: 2rem;
-  margin-bottom: 1rem;
+.owner-image-real {
+  width: 200px;
+  height: 250px;
+  border: 2px solid var(--border);
+  overflow: hidden;
 }
 
-.cta-section p {
+.owner-image-real img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.divider {
+  height: 4px;
+  background: var(--primary);
+}
+
+.latar-belakang {
+  padding: 3rem 0;
+  background: #f5f5f5;
+  min-height: 60vh;
+}
+
+.latar-box {
+  background: white;
+  border: 2px solid var(--border);
+  padding: 2.5rem;
+}
+
+.latar-box h2 {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
   margin-bottom: 1.5rem;
-  opacity: 0.9;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--text-primary);
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.latar-box p,
+.latar-box :deep(p) {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  text-align: justify;
+}
+
+.latar-box p:last-child,
+.latar-box :deep(p:last-child) {
+  margin-bottom: 0;
 }
 
 @media (max-width: 768px) {
-  .about-grid {
-    grid-template-columns: 1fr;
+  .page-header {
+    padding: 6rem 0 2rem;
   }
 
-  .vm-grid {
+  .header-grid {
     grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .header-text h1 {
+    font-size: 2rem;
+  }
+
+  .header-subtitle {
+    text-align: center;
+  }
+
+  .header-image {
+    display: flex;
+    justify-content: center;
+  }
+
+  .latar-box {
+    padding: 1.5rem;
+  }
+
+  .latar-box h2 {
+    font-size: 1.5rem;
   }
 }
 </style>

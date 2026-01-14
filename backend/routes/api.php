@@ -5,6 +5,9 @@ use App\Http\Controllers\LayananController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\MitraController;
 use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\KontenController;
+use App\Http\Controllers\TestimoniController;
+use App\Http\Controllers\GaleriController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,9 +26,9 @@ use Illuminate\Support\Facades\Route;
 // PUBLIC ROUTES (Tanpa autentikasi)
 // ============================================
 
-// Auth routes
+// Auth routes dengan rate limiting (5 percobaan per menit)
 Route::prefix('auth')->group(function () {
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
 });
 
 // Layanan publik (untuk halaman Layanan Kami)
@@ -34,6 +37,16 @@ Route::get('/layanan/{id}', [LayananController::class, 'show']);
 
 // Pemesanan publik (untuk form pemesanan pelanggan)
 Route::post('/pemesanan', [PemesananController::class, 'store']);
+
+// Konten publik (untuk halaman publik dinamis)
+Route::get('/konten', [KontenController::class, 'index']);
+Route::get('/konten/{key}', [KontenController::class, 'show']);
+
+// Testimoni publik
+Route::get('/testimoni', [TestimoniController::class, 'index']);
+
+// Galeri publik
+Route::get('/galeri', [GaleriController::class, 'index']);
 
 // ============================================
 // PROTECTED ROUTES (Butuh autentikasi admin)
@@ -77,4 +90,30 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [PenjualanController::class, 'index']);
         Route::get('/summary', [PenjualanController::class, 'summary']);
     });
+
+    // Konten CRUD (Admin only)
+    Route::prefix('admin/konten')->group(function () {
+        Route::get('/', [KontenController::class, 'index']);
+        Route::put('/{key}', [KontenController::class, 'update']);
+        Route::post('/bulk', [KontenController::class, 'bulkUpdate']);
+    });
+
+    // Testimoni CRUD (Admin only)
+    Route::prefix('admin/testimoni')->group(function () {
+        Route::get('/', [TestimoniController::class, 'adminIndex']);
+        Route::post('/', [TestimoniController::class, 'store']);
+        Route::put('/{id}', [TestimoniController::class, 'update']);
+        Route::post('/{id}', [TestimoniController::class, 'update']); // For file upload with PUT
+        Route::delete('/{id}', [TestimoniController::class, 'destroy']);
+    });
+
+    // Galeri CRUD (Admin only)
+    Route::prefix('admin/galeri')->group(function () {
+        Route::get('/', [GaleriController::class, 'adminIndex']);
+        Route::post('/', [GaleriController::class, 'store']);
+        Route::put('/{id}', [GaleriController::class, 'update']);
+        Route::post('/{id}', [GaleriController::class, 'update']); // For file upload with PUT
+        Route::delete('/{id}', [GaleriController::class, 'destroy']);
+    });
 });
+

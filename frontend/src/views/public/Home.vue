@@ -1,121 +1,175 @@
 <template>
   <div class="home">
     <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-overlay"></div>
-      <div class="container hero-content">
-        <h1 class="hero-title">Catering Berkualitas untuk Setiap Momen Spesial Anda</h1>
-        <p class="hero-subtitle">
-          Dapur Nyonya menyajikan hidangan lezat dengan cita rasa khas Indonesia 
-          untuk berbagai acara - dari pesta pernikahan hingga meeting kantor.
-        </p>
-        <div class="hero-buttons">
-          <router-link to="/hubungi" class="btn btn-primary btn-lg">Pesan Sekarang</router-link>
-          <router-link to="/layanan" class="btn btn-outline btn-lg">Lihat Menu</router-link>
-        </div>
-      </div>
-    </section>
-
-    <!-- Why Choose Us Section -->
-    <section class="section why-us">
+    <section class="section-full hero">
       <div class="container">
-        <h2 class="section-title">Mengapa Memilih Kami?</h2>
-        <p class="section-subtitle">Komitmen kami adalah kepuasan pelanggan</p>
+        <div class="hero-content">
+          <div class="hero-logo">
+            <div v-if="heroLogo" class="logo-image">
+              <img :src="getImageUrl(heroLogo)" alt="Logo Dapur Nyonya">
+            </div>
+            <div v-else class="logo-placeholder">🍽️</div>
+          </div>
+          <h1 class="hero-title">Dapur Nyonya</h1>
+          <p class="hero-motto">Catering Berkualitas untuk Setiap Momen Spesial</p>
+          
+          <div class="hero-buttons">
+            <router-link to="/hubungi" class="btn btn-primary">Pesan Sekarang</router-link>
+            <router-link to="/layanan" class="btn btn-outline-dark">Lihat Menu</router-link>
+            <router-link to="/hubungi" class="btn btn-outline-dark">Hubungi Kami</router-link>
+          </div>
+        </div>
         
-        <div class="grid grid-4">
-          <div class="why-card">
-            <div class="why-icon">🍽️</div>
-            <h3>Menu Beragam</h3>
-            <p>Pilihan menu yang bervariasi dari tradisional hingga modern</p>
+        <!-- Featured Images from Galeri -->
+        <div class="hero-images">
+          <div v-for="(item, index) in heroGaleri" :key="index" class="hero-image-box">
+            <img v-if="item.gambar" :src="getImageUrl(item.gambar)" :alt="item.caption">
+            <template v-else>
+              <span>📸</span>
+              <p>Gambar</p>
+            </template>
           </div>
-          <div class="why-card">
-            <div class="why-icon">⭐</div>
-            <h3>Kualitas Terjamin</h3>
-            <p>Bahan berkualitas dan freshness terjaga</p>
-          </div>
-          <div class="why-card">
-            <div class="why-icon">💰</div>
-            <h3>Harga Bersaing</h3>
-            <p>Paket hemat tanpa mengurangi kualitas rasa</p>
-          </div>
-          <div class="why-card">
-            <div class="why-icon">🚚</div>
-            <h3>Tepat Waktu</h3>
-            <p>Pengiriman on-time untuk kenyamanan acara Anda</p>
-          </div>
+          <template v-if="heroGaleri.length === 0">
+            <div class="hero-image-box">
+              <span>📸</span>
+              <p>Gambar</p>
+            </div>
+            <div class="hero-image-box">
+              <span>📸</span>
+              <p>Gambar</p>
+            </div>
+          </template>
         </div>
       </div>
     </section>
 
-    <!-- Popular Services Preview -->
-    <section class="section services-preview" style="background: white;">
+    <!-- Divider Line -->
+    <div class="divider"></div>
+
+    <!-- Kami Melayani Section -->
+    <section class="section-full kami-melayani">
       <div class="container">
-        <h2 class="section-title">Paket Favorit Kami</h2>
-        <p class="section-subtitle">Menu pilihan yang paling diminati pelanggan</p>
+        <h2 class="section-title">Kami Melayani</h2>
         
         <div v-if="loading" class="loading">
           <div class="spinner"></div>
         </div>
         
-        <div v-else class="grid grid-3">
-          <div v-for="layanan in popularLayanan" :key="layanan.id_layanan" class="card">
-            <div class="card-image-placeholder">
-              <span>🍱</span>
+        <div v-else class="menu-grid">
+          <div v-for="layanan in layananList" :key="layanan.id_layanan" class="menu-card">
+            <div class="menu-image">
+              <img v-if="layanan.gambar" :src="getImageUrl(layanan.gambar)" :alt="layanan.nama_paket">
+              <template v-else>
+                <span>🍱</span>
+                <p>Gambar Menu</p>
+              </template>
             </div>
-            <div class="card-content">
-              <h3 class="card-title">{{ layanan.nama_paket }}</h3>
-              <p class="card-text">{{ truncateText(layanan.deskripsi, 80) }}</p>
-              <p class="card-price">Rp {{ formatPrice(layanan.harga) }}</p>
+            <div class="menu-info">
+              <h3>{{ layanan.nama_paket }}</h3>
             </div>
+            <router-link to="/layanan" class="btn btn-outline">Lihat Selengkapnya</router-link>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- Tentang Kami Section -->
+    <section class="section-full tentang-section">
+      <div class="container">
+        <div class="tentang-grid">
+          <div class="tentang-image">
+            <div v-if="tentangImage" class="image-real">
+              <img :src="getImageUrl(tentangImage)" alt="Tentang Dapur Nyonya">
+            </div>
+            <div v-else class="image-placeholder">
+              <span>📸</span>
+              <p>Gambar</p>
+            </div>
+          </div>
+          <div class="tentang-content">
+            <h2 class="tentang-title">Tentang Kami</h2>
+            <p class="tentang-text">
+              Dapur Nyonya adalah layanan catering profesional yang berbasis di Sukabumi, 
+              Jawa Barat. Didirikan dengan passion untuk menyajikan hidangan berkualitas 
+              tinggi dengan cita rasa khas Indonesia yang autentik.
+            </p>
+            <p class="tentang-text">
+              Kami melayani berbagai jenis acara mulai dari pesta pernikahan, arisan, 
+              meeting kantor, seminar, hingga acara keluarga. Dengan pengalaman bertahun-tahun 
+              di industri kuliner, kami berkomitmen untuk memberikan pelayanan terbaik.
+            </p>
+            <router-link to="/tentang" class="btn btn-primary">Selengkapnya</router-link>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Galeri Section -->
+    <section class="section-full galeri-section">
+      <div class="container">
+        <h2 class="section-title">Galeri Dapur Nyonya</h2>
         
+        <div class="galeri-grid">
+          <div v-for="(item, index) in displayGaleri" :key="index" class="galeri-item">
+            <img v-if="item.gambar" :src="getImageUrl(item.gambar)" :alt="item.caption">
+            <template v-else>
+              <span>📸</span>
+              <p>Gambar</p>
+            </template>
+          </div>
+          <template v-if="displayGaleri.length === 0">
+            <div class="galeri-item"><span>📸</span><p>Gambar</p></div>
+            <div class="galeri-item"><span>📸</span><p>Gambar</p></div>
+            <div class="galeri-item"><span>📸</span><p>Gambar</p></div>
+          </template>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimoni Section -->
+    <section class="section-full testimoni-section">
+      <div class="container">
+        <h2 class="section-title">Testimoni</h2>
+        <p class="section-subtitle">Apa kata mereka...</p>
+        
+        <div class="testimoni-grid">
+          <div v-for="(item, index) in displayTestimoni" :key="index" class="testimoni-card">
+            <div class="testimoni-image">
+              <img v-if="item.gambar" :src="getImageUrl(item.gambar)" :alt="item.caption">
+              <template v-else>
+                <span>📸</span>
+                <p>Gambar</p>
+              </template>
+            </div>
+          </div>
+          <template v-if="displayTestimoni.length === 0">
+            <div class="testimoni-card"><div class="testimoni-image"><span>📸</span><p>Gambar</p></div></div>
+            <div class="testimoni-card"><div class="testimoni-image"><span>📸</span><p>Gambar</p></div></div>
+            <div class="testimoni-card"><div class="testimoni-image"><span>📸</span><p>Gambar</p></div></div>
+          </template>
+        </div>
+
         <div class="text-center mt-2">
-          <router-link to="/layanan" class="btn btn-secondary">Lihat Semua Paket</router-link>
+          <router-link to="/testimoni" class="btn btn-primary">Lihat Semua Testimoni</router-link>
         </div>
       </div>
     </section>
 
-    <!-- How to Order Section -->
-    <section class="section how-to-order">
-      <div class="container">
+    <!-- Cara Pemesanan Section -->
+    <section class="section-full cara-pemesanan-section">
+      <div class="container cara-container">
         <h2 class="section-title">Cara Pemesanan</h2>
-        <p class="section-subtitle">Proses mudah dalam 4 langkah</p>
         
-        <div class="steps-container">
-          <div class="step">
-            <div class="step-number">1</div>
-            <h4>Pilih Paket</h4>
-            <p>Tentukan paket catering sesuai kebutuhan acara Anda</p>
+        <div class="cara-pemesanan-box">
+          <div class="panduan-image">
+            <img v-if="caraPemesananImage" :src="getImageUrl(caraPemesananImage)" alt="Cara Pemesanan">
+            <template v-else>
+              <span>📋</span>
+              <p>Gambar / Panduan Pemesanan</p>
+            </template>
           </div>
-          <div class="step-arrow">→</div>
-          <div class="step">
-            <div class="step-number">2</div>
-            <h4>Isi Formulir</h4>
-            <p>Lengkapi data pemesanan melalui form online</p>
-          </div>
-          <div class="step-arrow">→</div>
-          <div class="step">
-            <div class="step-number">3</div>
-            <h4>Konfirmasi</h4>
-            <p>Tim kami akan menghubungi untuk konfirmasi</p>
-          </div>
-          <div class="step-arrow">→</div>
-          <div class="step">
-            <div class="step-number">4</div>
-            <h4>Terima Pesanan</h4>
-            <p>Pesanan dikirim tepat waktu ke lokasi Anda</p>
-          </div>
+          <router-link to="/hubungi" class="btn btn-primary btn-lg pesan-btn">Pesan Sekarang!</router-link>
         </div>
-      </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-      <div class="container">
-        <h2>Siap untuk Memesan?</h2>
-        <p>Hubungi kami sekarang dan dapatkan penawaran terbaik untuk acara Anda</p>
-        <router-link to="/hubungi" class="btn btn-primary btn-lg">Hubungi Kami</router-link>
       </div>
     </section>
   </div>
@@ -123,79 +177,154 @@
 
 <script>
 import layananService from '@/services/layananService'
+import galeriService from '@/services/galeriService'
+import testimoniService from '@/services/testimoniService'
+import kontenService from '@/services/kontenService'
 
 export default {
   name: 'Home',
   data() {
     return {
-      popularLayanan: [],
+      layananList: [],
+      galeriList: [],
+      testimoniList: [],
+      heroLogo: '',
+      tentangImage: '',
+      caraPemesananImage: '',
       loading: true
     }
   },
+  computed: {
+    heroGaleri() {
+      return this.galeriList.slice(0, 2)
+    },
+    displayGaleri() {
+      return this.galeriList.slice(0, 3)
+    },
+    displayTestimoni() {
+      return this.testimoniList.slice(0, 3)
+    }
+  },
   async mounted() {
-    await this.fetchLayanan()
+    await Promise.all([
+      this.fetchLayanan(),
+      this.fetchGaleri(),
+      this.fetchTestimoni(),
+      this.fetchKonten()
+    ])
+    this.loading = false
   },
   methods: {
     async fetchLayanan() {
       try {
         const response = await layananService.getAll()
-        this.popularLayanan = response.data.data.slice(0, 3)
+        this.layananList = response.data.data
       } catch (error) {
         console.error('Error fetching layanan:', error)
-      } finally {
-        this.loading = false
       }
+    },
+    async fetchGaleri() {
+      try {
+        const response = await galeriService.getAll()
+        this.galeriList = response.data.data
+      } catch (error) {
+        console.error('Error fetching galeri:', error)
+      }
+    },
+    async fetchTestimoni() {
+      try {
+        const response = await testimoniService.getAll()
+        this.testimoniList = response.data.data
+      } catch (error) {
+        console.error('Error fetching testimoni:', error)
+      }
+    },
+    async fetchKonten() {
+      try {
+        const response = await kontenService.getAll()
+        const konten = response.data.data
+        if (konten.home_logo) this.heroLogo = konten.home_logo.value
+        if (konten.home_tentang_image) this.tentangImage = konten.home_tentang_image.value
+        if (konten.home_cara_pemesanan) this.caraPemesananImage = konten.home_cara_pemesanan.value
+      } catch (error) {
+        console.error('Error fetching konten:', error)
+      }
+    },
+    getImageUrl(path) {
+      if (!path) return ''
+      return `http://localhost:8000/storage/${path}`
     },
     formatPrice(price) {
       return parseFloat(price).toLocaleString('id-ID')
-    },
-    truncateText(text, length) {
-      if (text.length <= length) return text
-      return text.substring(0, length) + '...'
     }
   }
 }
 </script>
 
 <style scoped>
-/* Hero Section */
-.hero {
+/* Full height section */
+.section-full {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  position: relative;
-  overflow: hidden;
+  padding: 2rem 0;
 }
 
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><circle cx="40" cy="40" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
-  background-size: 40px 40px;
+/* Hero Section */
+.hero {
+  padding-top: 5rem;
+  background: var(--background);
+}
+
+.hero .container {
+  width: 100%;
 }
 
 .hero-content {
-  position: relative;
-  z-index: 1;
   text-align: center;
-  color: white;
-  max-width: 800px;
+  margin-bottom: 3rem;
+}
+
+.hero-logo {
+  margin-bottom: 1rem;
+}
+
+.logo-placeholder {
+  width: 100px;
+  height: 100px;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
   margin: 0 auto;
-  padding-top: 80px;
+  background: #f9f9f9;
+}
+
+.logo-image {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.logo-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .hero-title {
-  font-family: 'Georgia', serif;
+  font-family: var(--font-heading);
   font-size: 3rem;
-  line-height: 1.2;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
 }
 
-.hero-subtitle {
-  font-size: 1.25rem;
+.hero-motto {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
   margin-bottom: 2rem;
-  opacity: 0.9;
 }
 
 .hero-buttons {
@@ -205,140 +334,352 @@ export default {
   flex-wrap: wrap;
 }
 
-.hero .btn-outline {
-  border-color: white;
+.btn-outline-dark {
+  border: 2px solid var(--text-primary);
+  color: var(--text-primary);
+  background: transparent;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+}
+
+.btn-outline-dark:hover {
+  background: var(--text-primary);
   color: white;
 }
 
-.hero .btn-outline:hover {
-  background: white;
-  color: var(--primary);
+.hero-images {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
-/* Why Choose Us */
-.why-us {
-  background: var(--background);
+.hero-image-box {
+  aspect-ratio: 4/3;
+  border: 2px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f9f9f9;
+  overflow: hidden;
 }
 
-.why-card {
-  text-align: center;
-  padding: 2rem;
-  background: white;
-  border-radius: var(--radius-lg);
-  transition: transform 0.3s ease;
+.hero-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.why-card:hover {
-  transform: translateY(-5px);
-}
-
-.why-icon {
+.hero-image-box span {
   font-size: 3rem;
-  margin-bottom: 1rem;
 }
 
-.why-card h3 {
+.hero-image-box p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Divider */
+.divider {
+  height: 4px;
+  background: var(--primary);
+}
+
+/* Section Title */
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  text-align: center;
   margin-bottom: 0.5rem;
   color: var(--text-primary);
 }
 
-.why-card p {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
+.section-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: var(--primary);
+  margin: 0.5rem auto 0;
 }
 
-/* Card Image Placeholder */
-.card-image-placeholder {
-  height: 180px;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+.section-subtitle {
+  text-align: center;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+/* Kami Melayani */
+.kami-melayani {
+  background: #f9f9f9;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.menu-card {
+  background: white;
+  border: 2px solid var(--border);
+  text-align: center;
+  padding-bottom: 1.5rem;
+}
+
+.menu-image {
+  aspect-ratio: 4/3;
+  background: #f0f0f0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  border-bottom: 2px solid var(--border);
+  overflow: hidden;
+}
+
+.menu-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.menu-image span {
+  font-size: 3rem;
+}
+
+.menu-image p {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.menu-info {
+  padding: 1rem;
+}
+
+.menu-info h3 {
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+/* Tentang Section */
+.tentang-section {
+  background: white;
+}
+
+.tentang-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.tentang-image .image-placeholder,
+.tentang-image .image-real {
+  aspect-ratio: 4/3;
+  border: 2px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f9f9f9;
+  overflow: hidden;
+}
+
+.tentang-image .image-real img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tentang-image span {
   font-size: 4rem;
 }
 
-/* How to Order */
-.how-to-order {
-  background: var(--background);
-}
-
-.steps-container {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.step {
-  text-align: center;
-  max-width: 200px;
-}
-
-.step-number {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: var(--primary);
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1rem;
-}
-
-.step h4 {
-  margin-bottom: 0.5rem;
-}
-
-.step p {
+.tentang-image p {
   color: var(--text-secondary);
-  font-size: 0.9rem;
 }
 
-.step-arrow {
+.tentang-title {
+  font-family: var(--font-heading);
   font-size: 2rem;
-  color: var(--primary);
-  margin-top: 1rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
 }
 
-/* CTA Section */
-.cta-section {
-  background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
-  color: white;
-  text-align: center;
-  padding: 4rem 0;
-}
-
-.cta-section h2 {
-  font-family: 'Georgia', serif;
-  font-size: 2rem;
+.tentang-text {
+  color: var(--text-secondary);
+  line-height: 1.7;
   margin-bottom: 1rem;
 }
 
-.cta-section p {
-  margin-bottom: 1.5rem;
-  opacity: 0.9;
+/* Galeri Section */
+.galeri-section {
+  background: #f9f9f9;
+}
+
+.galeri-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.galeri-item {
+  aspect-ratio: 4/3;
+  border: 2px solid var(--border);
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.galeri-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.galeri-item span {
+  font-size: 3rem;
+}
+
+.galeri-item p {
+  color: var(--text-secondary);
+}
+
+/* Testimoni Section */
+.testimoni-section {
+  background: white;
+}
+
+.testimoni-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.testimoni-card {
+  border: 2px solid var(--border);
+}
+
+.testimoni-image {
+  aspect-ratio: 3/4;
+  background: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.testimoni-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.testimoni-image span {
+  font-size: 3rem;
+}
+
+.testimoni-image p {
+  color: var(--text-secondary);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-2 {
+  margin-top: 2rem;
+}
+
+/* Cara Pemesanan */
+.cara-pemesanan-section {
+  background: #f5f5f5;
+}
+
+.cara-container {
+  text-align: center;
+}
+
+.cara-pemesanan-box {
+  max-width: 800px;
+  margin: 2rem auto 0;
+}
+
+.panduan-image {
+  aspect-ratio: 16/9;
+  border: 2px solid var(--border);
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.panduan-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.panduan-image span {
+  font-size: 4rem;
+}
+
+.panduan-image p {
+  color: var(--text-secondary);
+}
+
+.pesan-btn {
+  padding: 1rem 3rem;
+  font-size: 1.2rem;
 }
 
 /* Responsive */
+@media (max-width: 992px) {
+  .menu-grid,
+  .galeri-grid,
+  .testimoni-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .tentang-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-title {
     font-size: 2rem;
   }
   
-  .hero-subtitle {
-    font-size: 1rem;
+  .hero-images {
+    grid-template-columns: 1fr;
   }
-
-  .step-arrow {
-    display: none;
+  
+  .menu-grid,
+  .galeri-grid,
+  .testimoni-grid {
+    grid-template-columns: 1fr;
   }
-
-  .steps-container {
-    gap: 2rem;
+  
+  .section-full {
+    min-height: auto;
+    padding: 4rem 0;
   }
 }
 </style>
