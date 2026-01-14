@@ -1,0 +1,80 @@
+<?php
+
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LayananController;
+use App\Http\Controllers\PemesananController;
+use App\Http\Controllers\MitraController;
+use App\Http\Controllers\PenjualanController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "api" middleware group. Make something great!
+|
+*/
+
+// ============================================
+// PUBLIC ROUTES (Tanpa autentikasi)
+// ============================================
+
+// Auth routes
+Route::prefix('auth')->group(function () {
+    Route::post('/login', [AuthController::class, 'login']);
+});
+
+// Layanan publik (untuk halaman Layanan Kami)
+Route::get('/layanan', [LayananController::class, 'index']);
+Route::get('/layanan/{id}', [LayananController::class, 'show']);
+
+// Pemesanan publik (untuk form pemesanan pelanggan)
+Route::post('/pemesanan', [PemesananController::class, 'store']);
+
+// ============================================
+// PROTECTED ROUTES (Butuh autentikasi admin)
+// ============================================
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    // Auth
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::get('/auth/me', [AuthController::class, 'me']);
+
+    // Layanan CRUD (Admin only)
+    Route::prefix('admin/layanan')->group(function () {
+        Route::get('/', [LayananController::class, 'index']);
+        Route::post('/', [LayananController::class, 'store']);
+        Route::get('/{id}', [LayananController::class, 'show']);
+        Route::put('/{id}', [LayananController::class, 'update']);
+        Route::delete('/{id}', [LayananController::class, 'destroy']);
+    });
+
+    // Pemesanan CRUD (Admin only)
+    Route::prefix('admin/pemesanan')->group(function () {
+        Route::get('/', [PemesananController::class, 'index']);
+        Route::get('/{id}', [PemesananController::class, 'show']);
+        Route::put('/{id}', [PemesananController::class, 'update']);
+        Route::patch('/{id}/status', [PemesananController::class, 'updateStatus']);
+        Route::delete('/{id}', [PemesananController::class, 'destroy']);
+    });
+
+    // Mitra CRUD (Admin only)
+    Route::prefix('admin/mitra')->group(function () {
+        Route::get('/', [MitraController::class, 'index']);
+        Route::post('/', [MitraController::class, 'store']);
+        Route::get('/{id}', [MitraController::class, 'show']);
+        Route::put('/{id}', [MitraController::class, 'update']);
+        Route::delete('/{id}', [MitraController::class, 'destroy']);
+    });
+
+    // Penjualan / Laporan (Admin only)
+    Route::prefix('admin/penjualan')->group(function () {
+        Route::get('/', [PenjualanController::class, 'index']);
+        Route::get('/summary', [PenjualanController::class, 'summary']);
+    });
+});
