@@ -298,33 +298,38 @@ export default {
 </script>
 
 <style scoped>
+/* Page Header - Red Gradient */
 .page-header {
-  background: white;
-  text-align: left;
-  padding: 8rem 0 2rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  text-align: center;
+  padding: 8rem 0 3rem;
+  color: white;
 }
 
 .page-header h1 {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
+  font-size: 3rem;
   margin-bottom: 1rem;
-  color: var(--text-primary);
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
 .header-subtitle {
-  color: var(--text-secondary);
-  max-width: 800px;
-  line-height: 1.6;
+  color: rgba(255,255,255,0.9);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.7;
+  font-size: 1.1rem;
 }
 
 .divider {
-  height: 4px;
-  background: var(--primary);
+  height: 6px;
+  background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--primary-light), var(--primary), var(--primary-dark));
 }
 
 .hubungi-section {
-  padding: 3rem 0;
-  background: #f5f5f5;
+  padding: 4rem 0;
+  background: linear-gradient(180deg, #FFF5F5 0%, #f8f8f8 100%);
 }
 
 .contact-grid {
@@ -334,138 +339,243 @@ export default {
   align-items: start;
 }
 
+/* Modern Form Section */
 .form-section {
   background: white;
-  padding: 2rem;
-  border: 1px solid var(--border);
+  padding: 2.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 40px rgba(196, 30, 58, 0.1);
+  border: none;
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .form-label {
   display: block;
-  margin-bottom: 0.25rem;
-  font-size: 0.9rem;
-  color: var(--text-primary);
-}
-
-.form-control {
-  width: 100%;
-  padding: 0.75rem;
-  border: none;
-  background: #f5f5f5;
-  font-size: 1rem;
-}
-
-.form-control:focus {
-  outline: 2px solid var(--primary);
-}
-
-.btn-block {
-  width: 100%;
-  margin-top: 1rem;
-}
-
-.info-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.info-card {
-  background: white;
-  padding: 1.5rem;
-  border: 1px solid var(--border);
-}
-
-.info-card h4 {
-  font-size: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
   color: var(--text-primary);
   font-weight: 600;
 }
 
+.form-control {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  border: 2px solid #e8e8e8;
+  border-radius: var(--radius-md);
+  background: #fafafa;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(196, 30, 58, 0.1);
+}
+
+.form-control.error {
+  border-color: var(--error);
+}
+
+select.form-control {
+  cursor: pointer;
+}
+
+.btn-block {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  font-size: 1.1rem;
+  border-radius: 50px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  border: none;
+  box-shadow: 0 6px 20px rgba(196, 30, 58, 0.35);
+  transition: all 0.3s ease;
+}
+
+.btn-block:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(196, 30, 58, 0.4);
+}
+
+/* Info Section - Modern Cards */
+.info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.info-card {
+  background: white;
+  padding: 1.75rem;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(196, 30, 58, 0.12);
+}
+
+.info-card h4 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-card h4::before {
+  content: '';
+  width: 4px;
+  height: 20px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
 .info-item {
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 2px solid #f0f0f0;
 }
 
 .info-item strong {
   display: block;
   font-size: 0.85rem;
-  color: var(--text-primary);
+  color: var(--primary);
   margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .info-item p {
-  color: var(--text-secondary);
+  color: var(--text-primary);
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.jam-kerja {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
 }
 
 .jam-kerja p {
   color: var(--text-secondary);
-  font-size: 0.85rem;
-  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  background: #f8f8f8;
+  border-radius: var(--radius-sm);
 }
 
+/* Ketentuan - Collapsible */
 .ketentuan-card {
   background: white;
-  padding: 1rem 1.5rem;
-  border: 1px solid var(--border);
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-md);
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  border: none;
 }
 
 .ketentuan-card:hover {
-  background: #f9f9f9;
+  background: #FFF5F5;
+  box-shadow: 0 4px 15px rgba(196, 30, 58, 0.1);
 }
 
 .ketentuan-card span:first-child {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--text-primary);
+  font-weight: 500;
 }
 
 .arrow {
-  font-size: 0.7rem;
-  color: var(--text-secondary);
+  font-size: 0.8rem;
+  color: var(--primary);
+  transition: transform 0.2s;
 }
 
 .ketentuan-content {
   background: white;
-  padding: 1rem 1.5rem;
-  border: 1px solid var(--border);
-  border-top: none;
+  padding: 1.25rem 1.5rem;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  margin-top: -0.5rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
 .ketentuan-content p {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
   margin: 0;
+  line-height: 1.6;
 }
 
+/* WhatsApp Button */
 .whatsapp-link {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 
 .btn-whatsapp {
-  display: block;
-  text-align: center;
-  background: #25D366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
   color: white;
-  padding: 0.75rem 1rem;
-  border-radius: var(--radius-md);
-  font-weight: 500;
+  padding: 1rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
+  transition: all 0.3s ease;
 }
 
 .btn-whatsapp:hover {
-  background: #1da851;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
 }
 
+/* Alerts */
+.alert {
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+}
+
+.alert-success {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  color: #155724;
+  border-left: 4px solid #28a745;
+}
+
+.alert-error {
+  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  color: #721c24;
+  border-left: 4px solid #dc3545;
+}
+
+.form-error {
+  color: var(--error);
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .contact-grid {
     grid-template-columns: 1fr;
@@ -473,15 +583,18 @@ export default {
 
   .page-header {
     padding: 6rem 0 2rem;
-    text-align: center;
   }
 
   .page-header h1 {
-    font-size: 2rem;
+    font-size: 2.25rem;
   }
 
-  .header-subtitle {
-    text-align: center;
+  .form-section {
+    padding: 1.5rem;
+  }
+
+  .jam-kerja {
+    grid-template-columns: 1fr;
   }
 }
 </style>

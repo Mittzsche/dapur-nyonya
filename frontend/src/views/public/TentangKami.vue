@@ -119,9 +119,11 @@ export default {
 </script>
 
 <style scoped>
+/* Page Header - Red Gradient */
 .page-header {
-  background: white;
-  padding: 8rem 0 2rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  padding: 8rem 0 3rem;
+  color: white;
 }
 
 .header-grid {
@@ -133,16 +135,17 @@ export default {
 
 .header-text h1 {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
+  font-size: 3rem;
   margin-bottom: 1rem;
-  color: var(--text-primary);
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
 .header-subtitle {
-  color: var(--text-secondary);
+  color: rgba(255,255,255,0.9);
   max-width: 600px;
-  line-height: 1.6;
-  font-size: 0.95rem;
+  line-height: 1.7;
+  font-size: 1.05rem;
 }
 
 .owner-image {

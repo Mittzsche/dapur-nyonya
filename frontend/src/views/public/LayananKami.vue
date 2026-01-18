@@ -72,35 +72,40 @@ export default {
 </script>
 
 <style scoped>
+/* Page Header - Red Gradient */
 .page-header {
-  background: white;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   text-align: center;
-  padding: 8rem 0 2rem;
+  padding: 8rem 0 3rem;
+  color: white;
 }
 
 .page-header h1 {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  color: var(--text-primary);
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
 .page-header h1::after {
   content: '';
   display: block;
-  width: 60px;
-  height: 3px;
-  background: var(--primary);
-  margin: 0.5rem auto 0;
+  width: 80px;
+  height: 4px;
+  background: white;
+  margin: 0.75rem auto 0;
+  border-radius: 2px;
 }
 
 .page-header p {
-  color: var(--text-secondary);
+  color: rgba(255,255,255,0.9);
+  font-size: 1.1rem;
 }
 
 .divider {
-  height: 4px;
-  background: var(--primary);
+  height: 6px;
+  background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--primary-light), var(--primary), var(--primary-dark));
 }
 
 .layanan-section {

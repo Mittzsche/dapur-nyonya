@@ -1,5 +1,5 @@
 /* ================================================
-   DAPUR NYONYA - Main CSS (Red Theme)
+   DAPUR NYONYA - Main CSS (Red Theme - Enhanced)
    ================================================ */
 
 /* --- CSS Variables (Design System) --- */
@@ -7,21 +7,28 @@
   /* Colors - Red Theme */
   --primary: #C41E3A;
   /* Crimson Red */
-  --primary-dark: #A01830;
+  --primary-dark: #9E1830;
   --primary-light: #E8364F;
+  --primary-gradient: linear-gradient(135deg, #C41E3A 0%, #E8364F 100%);
+  --primary-gradient-dark: linear-gradient(135deg, #9E1830 0%, #C41E3A 100%);
   --secondary: #2D2D2D;
   /* Dark Gray */
   --secondary-light: #4A4A4A;
   --accent: #FFD700;
   /* Gold accent */
+  --accent-gradient: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
   --background: #FFFFFF;
   --background-alt: #FFF5F5;
   /* Light pinkish white */
+  --background-red: #FEF0F2;
+  /* Very light red */
+  --background-gradient: linear-gradient(180deg, #FFFFFF 0%, #FFF5F5 100%);
   --surface: #FFFFFF;
   --text-primary: #2D2D2D;
   --text-secondary: #6B6B6B;
   --text-light: #FFFFFF;
   --border: #E5E5E5;
+  --border-red: rgba(196, 30, 58, 0.2);
   --error: #DC3545;
   --success: #28A745;
   --warning: #FFC107;
@@ -48,6 +55,8 @@
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+  --shadow-red: 0 4px 15px rgba(196, 30, 58, 0.3);
+  --shadow-red-lg: 0 10px 30px rgba(196, 30, 58, 0.25);
 
   /* Container */
   --container-width: 1200px;

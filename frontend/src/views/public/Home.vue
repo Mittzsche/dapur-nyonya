@@ -270,10 +270,11 @@ export default {
   padding: 2rem 0;
 }
 
-/* Hero Section */
+/* Hero Section - Red Gradient Background */
 .hero {
   padding-top: 5rem;
-  background: var(--background);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
 }
 
 .hero .container {
@@ -290,40 +291,46 @@ export default {
 }
 
 .logo-placeholder {
-  width: 100px;
-  height: 100px;
-  border: 2px solid var(--border);
+  width: 120px;
+  height: 120px;
+  border: 3px solid rgba(255,255,255,0.5);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
+  font-size: 3.5rem;
   margin: 0 auto;
-  background: #f9f9f9;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
 }
 
 .logo-image {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   margin: 0 auto;
   overflow: hidden;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.5);
 }
 
 .logo-image img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  background: white;
 }
 
 .hero-title {
   font-family: var(--font-heading);
-  font-size: 3rem;
+  font-size: 3.5rem;
   margin-bottom: 0.5rem;
-  color: var(--text-primary);
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
 .hero-motto {
-  color: var(--text-secondary);
-  font-size: 1.1rem;
+  color: rgba(255,255,255,0.9);
+  font-size: 1.2rem;
   margin-bottom: 2rem;
 }
 
@@ -334,18 +341,35 @@ export default {
   flex-wrap: wrap;
 }
 
+.hero .btn-primary {
+  background: white;
+  color: var(--primary);
+  border-color: white;
+  font-weight: 700;
+}
+
+.hero .btn-primary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #333;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
 .btn-outline-dark {
-  border: 2px solid var(--text-primary);
-  color: var(--text-primary);
+  border: 2px solid white;
+  color: white;
   background: transparent;
   padding: 0.75rem 1.5rem;
   border-radius: var(--radius-md);
   transition: all 0.3s ease;
+  font-weight: 600;
 }
 
 .btn-outline-dark:hover {
-  background: var(--text-primary);
-  color: white;
+  background: white;
+  color: var(--primary);
+  transform: translateY(-3px);
 }
 
 .hero-images {
@@ -358,13 +382,20 @@ export default {
 
 .hero-image-box {
   aspect-ratio: 4/3;
-  border: 2px solid var(--border);
+  border: 3px solid rgba(255,255,255,0.3);
+  border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #f9f9f9;
+  background: rgba(255,255,255,0.1);
   overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.hero-image-box:hover {
+  transform: scale(1.03);
+  border-color: white;
 }
 
 .hero-image-box img {
@@ -378,20 +409,20 @@ export default {
 }
 
 .hero-image-box p {
-  color: var(--text-secondary);
+  color: rgba(255,255,255,0.7);
   font-size: 0.9rem;
 }
 
-/* Divider */
+/* Divider - Enhanced */
 .divider {
-  height: 4px;
-  background: var(--primary);
+  height: 6px;
+  background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--primary-light), var(--primary), var(--primary-dark));
 }
 
 /* Section Title */
 .section-title {
   font-family: var(--font-heading);
-  font-size: 2rem;
+  font-size: 2.5rem;
   text-align: center;
   margin-bottom: 0.5rem;
   color: var(--text-primary);
@@ -400,21 +431,23 @@ export default {
 .section-title::after {
   content: '';
   display: block;
-  width: 60px;
-  height: 3px;
+  width: 80px;
+  height: 4px;
   background: var(--primary);
-  margin: 0.5rem auto 0;
+  margin: 0.75rem auto 0;
+  border-radius: 2px;
 }
 
 .section-subtitle {
   text-align: center;
   color: var(--text-secondary);
   margin-bottom: 2rem;
+  font-size: 1.1rem;
 }
 
-/* Kami Melayani */
+/* Kami Melayani - Light Red Background */
 .kami-melayani {
-  background: #f9f9f9;
+  background: linear-gradient(180deg, #FFF5F5 0%, #FEF0F2 100%);
 }
 
 .menu-grid {
@@ -426,20 +459,39 @@ export default {
 
 .menu-card {
   background: white;
-  border: 2px solid var(--border);
+  border: none;
+  border-radius: var(--radius-lg);
   text-align: center;
   padding-bottom: 1.5rem;
+  box-shadow: 0 4px 20px rgba(196, 30, 58, 0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.menu-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(196, 30, 58, 0.2);
 }
 
 .menu-image {
   aspect-ratio: 4/3;
-  background: #f0f0f0;
+  background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f0 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-bottom: 2px solid var(--border);
   overflow: hidden;
+  position: relative;
+}
+
+.menu-image::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--primary);
 }
 
 .menu-image img {
@@ -449,7 +501,7 @@ export default {
 }
 
 .menu-image span {
-  font-size: 3rem;
+  font-size: 3.5rem;
 }
 
 .menu-image p {
@@ -458,17 +510,41 @@ export default {
 }
 
 .menu-info {
-  padding: 1rem;
+  padding: 1.5rem 1rem;
 }
 
 .menu-info h3 {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: var(--text-primary);
+  font-weight: 600;
 }
 
-/* Tentang Section */
+.menu-card .btn-outline {
+  background: transparent;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.menu-card .btn-outline:hover {
+  background: var(--primary);
+  color: white;
+}
+
+/* Tentang Section - Red Accent */
 .tentang-section {
   background: white;
+  position: relative;
+}
+
+.tentang-section::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  background: var(--primary);
 }
 
 .tentang-grid {
@@ -481,13 +557,15 @@ export default {
 .tentang-image .image-placeholder,
 .tentang-image .image-real {
   aspect-ratio: 4/3;
-  border: 2px solid var(--border);
+  border: none;
+  border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #f9f9f9;
+  background: linear-gradient(135deg, #FEF0F2 0%, #FFE5E8 100%);
   overflow: hidden;
+  box-shadow: 0 10px 30px rgba(196, 30, 58, 0.15);
 }
 
 .tentang-image .image-real img {
@@ -501,25 +579,27 @@ export default {
 }
 
 .tentang-image p {
-  color: var(--text-secondary);
+  color: var(--primary);
 }
 
 .tentang-title {
   font-family: var(--font-heading);
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-bottom: 1rem;
-  color: var(--text-primary);
+  color: var(--primary);
+  position: relative;
 }
 
 .tentang-text {
   color: var(--text-secondary);
-  line-height: 1.7;
+  line-height: 1.8;
   margin-bottom: 1rem;
+  font-size: 1.05rem;
 }
 
-/* Galeri Section */
+/* Galeri Section - Gradient Background */
 .galeri-section {
-  background: #f9f9f9;
+  background: linear-gradient(180deg, #f8f8f8 0%, #FFF5F5 100%);
 }
 
 .galeri-grid {
@@ -531,13 +611,21 @@ export default {
 
 .galeri-item {
   aspect-ratio: 4/3;
-  border: 2px solid var(--border);
+  border: none;
+  border-radius: var(--radius-lg);
   background: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.galeri-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(196, 30, 58, 0.2);
 }
 
 .galeri-item img {
@@ -554,9 +642,22 @@ export default {
   color: var(--text-secondary);
 }
 
-/* Testimoni Section */
+/* Testimoni Section - Red Background */
 .testimoni-section {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+}
+
+.testimoni-section .section-title {
+  color: white;
+}
+
+.testimoni-section .section-title::after {
   background: white;
+}
+
+.testimoni-section .section-subtitle {
+  color: rgba(255,255,255,0.8);
 }
 
 .testimoni-grid {
@@ -568,12 +669,21 @@ export default {
 }
 
 .testimoni-card {
-  border: 2px solid var(--border);
+  border: none;
+  border-radius: var(--radius-lg);
+  background: rgba(255,255,255,0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.testimoni-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255,255,255,0.2);
 }
 
 .testimoni-image {
   aspect-ratio: 3/4;
-  background: #f9f9f9;
+  background: rgba(255,255,255,0.05);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -592,7 +702,20 @@ export default {
 }
 
 .testimoni-image p {
-  color: var(--text-secondary);
+  color: rgba(255,255,255,0.6);
+}
+
+.testimoni-section .btn-primary {
+  background: white;
+  color: var(--primary);
+  border-color: white;
+  font-weight: 700;
+}
+
+.testimoni-section .btn-primary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #333;
 }
 
 .text-center {
@@ -603,9 +726,9 @@ export default {
   margin-top: 2rem;
 }
 
-/* Cara Pemesanan */
+/* Cara Pemesanan - Gradient */
 .cara-pemesanan-section {
-  background: #f5f5f5;
+  background: linear-gradient(180deg, #FFF5F5 0%, white 100%);
 }
 
 .cara-container {
@@ -619,14 +742,16 @@ export default {
 
 .panduan-image {
   aspect-ratio: 16/9;
-  border: 2px solid var(--border);
-  background: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #FEF0F2 0%, #FFE5E8 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-bottom: 2rem;
   overflow: hidden;
+  box-shadow: 0 10px 30px rgba(196, 30, 58, 0.15);
 }
 
 .panduan-image img {
@@ -640,12 +765,22 @@ export default {
 }
 
 .panduan-image p {
-  color: var(--text-secondary);
+  color: var(--primary);
 }
 
 .pesan-btn {
-  padding: 1rem 3rem;
-  font-size: 1.2rem;
+  padding: 1.25rem 4rem;
+  font-size: 1.3rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 8px 25px rgba(196, 30, 58, 0.4);
+  transition: all 0.3s ease;
+}
+
+.pesan-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(196, 30, 58, 0.5);
 }
 
 /* Responsive */
@@ -660,11 +795,15 @@ export default {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
+  
+  .tentang-section::before {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
   .hero-title {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
   
   .hero-images {
@@ -681,5 +820,10 @@ export default {
     min-height: auto;
     padding: 4rem 0;
   }
+  
+  .section-title {
+    font-size: 2rem;
+  }
 }
 </style>
+
