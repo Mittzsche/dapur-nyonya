@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 
 Route::get('/', function () {
     return view('welcome');
@@ -9,65 +10,58 @@ Route::get('/', function () {
 
 Route::get('/fix-storage-link', function () {
     try {
-        // Enable error reporting
         ini_set('display_errors', 1);
         error_reporting(E_ALL);
 
         $target = storage_path('app/public');
         $link = public_path('storage');
+        $uploadPath = storage_path('app/public/images/layanan');
+
         $results = [];
+        $results[] = "<h1>Debug Storage & Files</h1>";
 
-        $results[] = "<b>Debug Info:</b>";
-        $results[] = "Target: $target";
-        $results[] = "Link: $link";
+        // 1. Check Link Status
+        $results[] = "<h3>Link Status:</h3>";
+        if (is_link($link)) {
+            $results[] = "✅ Symlink exists.";
+            $realPath = readlink($link);
+            $results[] = "   Target: " . $realPath;
+            $results[] = "   Valid: " . (is_dir($realPath) ? "YES" : "NO - Broken Link");
+        } else {
+            $results[] = "❌ Symlink MISSING at $link";
+        }
 
-        // 1. Handle existing link/file/directory (Wrapped in try-catch)
-        if (file_exists($link)) {
-            try {
-                if (is_link($link)) {
-                    unlink($link);
-                    $results[] = "Deleted existing symlink.";
-                } elseif (is_dir($link)) {
-                    $backupName = $link . '_backup_' . time();
-                    rename($link, $backupName);
-                    $results[] = "Renamed existing directory to: " . basename($backupName);
-                } else {
-                    unlink($link);
-                    $results[] = "Deleted existing file.";
+        // 2. Check Upload Directory
+        $results[] = "<h3>Upload Directory ($uploadPath):</h3>";
+        if (is_dir($uploadPath)) {
+            $results[] = "✅ Directory exists.";
+            $files = scandir($uploadPath);
+            $results[] = "<ul>";
+            foreach ($files as $file) {
+                if ($file != "." && $file != "..") {
+                    $url = "https://dapur-nyonya-production.up.railway.app/storage/images/layanan/" . $file;
+                    $results[] = "<li>$file - <a href='$url' target='_blank'>Try Open</a></li>";
                 }
-            } catch (\Throwable $e) {
-                $results[] = "WARNING: Could not remove existing file/link: " . $e->getMessage();
             }
+            $results[] = "</ul>";
+        } else {
+            $results[] = "❌ Directory DOES NOT EXIST.";
         }
 
-        // 2. Ensure target exists
-        if (!is_dir($target)) {
-            try {
-                mkdir($target, 0755, true);
-                $results[] = "Created missing target directory.";
-            } catch (\Throwable $e) {
-                $results[] = "WARNING: Could not create target directory: " . $e->getMessage();
-            }
-        }
-
-        // 3. Create Link
-        try {
-            symlink($target, $link);
-            $results[] = "<h3 style='color:green'>SUCCESS: Link created via symlink() function.</h3>";
-        } catch (\Throwable $e) {
-            $results[] = "symlink() failed: " . $e->getMessage();
-
-            // Retry with Artisan
+        // 3. Re-Link Button (Manual Trigger basically)
+        // Only run if specifically asked to avoid loop
+        if (request()->has('relink')) {
             try {
                 Artisan::call('storage:link');
-                $results[] = "<h3 style='color:green'>SUCCESS: Link created via Artisan command.</h3>";
-            } catch (\Throwable $e2) {
-                $results[] = "<h3 style='color:red'>FAILED: " . $e2->getMessage() . "</h3>";
+                $results[] = "<br><b>Ran artisan storage:link</b>";
+            } catch (\Exception $e) {
+                $results[] = "<br><b>Error running artisan:</b> " . $e->getMessage();
             }
         }
 
         return implode("<br>", $results);
-    } catch (\Throwable $mainE) {
-        return "CRITICAL ERROR: " . $mainE->getMessage() . "<br>" . $mainE->getTraceAsString();
+
+    } catch (\Throwable $e) {
+        return "CRITICAL ERROR: " . $e->getMessage();
     }
 });
