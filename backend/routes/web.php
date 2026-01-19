@@ -28,8 +28,18 @@ Route::get('/fix-storage-link', function () {
         // 2. Fix Symlink
         $link = public_path('storage');
         if (file_exists($link)) {
-            unlink($link); // Force delete broken link
-            $results[] = "Deleted old link/file.";
+            if (is_link($link)) {
+                unlink($link); // Valid symlink removal
+                $results[] = "Deleted old symlink.";
+            } elseif (is_dir($link)) {
+                // It is a real directory, rename it to back it up
+                $backup = public_path('storage_backup_' . time());
+                rename($link, $backup);
+                $results[] = "⚠️ Renamed obstructing directory 'public/storage' to '" . basename($backup) . "'";
+            } else {
+                unlink($link); // Regular file
+                $results[] = "Deleted obstructing file.";
+            }
         }
 
         try {
@@ -46,7 +56,7 @@ Route::get('/fix-storage-link', function () {
         $results[] = "<hr><h3>Status Akhir:</h3>";
         $results[] = "Storage Link Exists: " . (file_exists(public_path('storage')) ? "YES ✅" : "NO ❌");
         $results[] = "Upload Folder Exists: " . (file_exists(storage_path('app/public/images/layanan')) ? "YES ✅" : "NO ❌");
-        
+
         return implode("<br>", $results);
 
     } catch (\Throwable $e) {
