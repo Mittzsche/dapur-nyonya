@@ -159,25 +159,25 @@ docker run -p 8000:8080 dapur-nyonya-backend
 
 ---
 
-## ▲ Deploy ke Vercel (Frontend)
+## ▲ Deploy ke Vercel (Full Stack - Single Project)
 
-### 1. Install Vercel CLI
+Aplikasi ini sudah dikonfigurasi untuk **monorepo deployment** di Vercel, sehingga frontend dan backend bisa di-deploy sebagai satu project.
+
+> **⚠️ Catatan:** Vercel menggunakan `vercel-php` runtime untuk Laravel. Ini cocok untuk aplikasi dengan traffic rendah-menengah. Untuk production skala besar, gunakan Docker deployment.
+
+### Langkah Deploy
 
 ```bash
+# 1. Install Vercel CLI (jika belum)
 npm install -g vercel
-```
 
-### 2. Update Environment Variable
+# 2. Dari root folder project
+cd dapur-nyonya
 
-Edit `frontend/.env.production`:
-```env
-VUE_APP_API_URL=https://your-backend-url.railway.app/api
-```
+# 3. Login ke Vercel
+vercel login
 
-### 3. Deploy
-
-```bash
-cd frontend
+# 4. Deploy
 vercel --prod
 ```
 
@@ -186,9 +186,29 @@ vercel --prod
 1. Push ke GitHub
 2. Buka [vercel.com](https://vercel.com)
 3. Import repository
-4. Set environment variable:
-   - `VUE_APP_API_URL` = `https://your-backend-url/api`
-5. Deploy
+4. Biarkan Vercel detect konfigurasi dari `vercel.json`
+5. Deploy!
+
+### Struktur Deployment
+
+| Endpoint | Served By |
+|----------|-----------|
+| `/` | Vue.js SPA (frontend) |
+| `/api/*` | Laravel API (backend) |
+| `/storage/*` | Laravel storage files |
+
+### Environment Variables (di Vercel Dashboard)
+
+| Variable | Value |
+|----------|-------|
+| `APP_KEY` | (run `php artisan key:generate --show`) |
+| `APP_ENV` | `production` |
+| `APP_DEBUG` | `false` |
+| `DB_CONNECTION` | `mysql` |
+| `DB_HOST` | (your database host) |
+| `DB_DATABASE` | (your database name) |
+| `DB_USERNAME` | (your database user) |
+| `DB_PASSWORD` | (your database password) |
 
 ---
 
