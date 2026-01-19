@@ -82,6 +82,21 @@ export default {
     handleImageSelect(event) {
       const file = event.target.files[0]
       if (file) {
+        // Validation: Max 2MB
+        if (file.size > 2 * 1024 * 1024) {
+          alert('Ukuran file terlalu besar. Maksimal 2MB.')
+          event.target.value = ''
+          return
+        }
+        
+        // Validation: Type
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif']
+        if (!allowedTypes.includes(file.type)) {
+          alert('Format file tidak didukung. Gunakan PNG, JPG, atau GIF.')
+          event.target.value = ''
+          return
+        }
+
         this.selectedFile = file
         this.imagePreview = URL.createObjectURL(file)
       }
