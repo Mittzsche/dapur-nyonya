@@ -3,6 +3,7 @@ import axios from 'axios'
 // Base API configuration
 const api = axios.create({
   baseURL: process.env.VUE_APP_API_URL || 'http://localhost:8000/api',
+  timeout: 10000, // 10 seconds timeout
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
