@@ -1,5 +1,5 @@
 # Stage 1: Build stage
-FROM composer:2.6 AS composer-build
+FROM composer:latest AS composer-build
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ COPY . .
 RUN composer dump-autoload --optimize --no-dev
 
 # Stage 2: Production stage
-FROM php:8.2-fpm-alpine
+FROM php:8.4-fpm-alpine
 
 # Install system dependencies
 RUN apk add --no-cache \
