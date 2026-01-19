@@ -13,52 +13,40 @@ Route::get('/fix-storage-link', function () {
         ini_set('display_errors', 1);
         error_reporting(E_ALL);
 
-        $target = storage_path('app/public');
-        $link = public_path('storage');
-        $uploadPath = storage_path('app/public/images/layanan');
-
         $results = [];
-        $results[] = "<h1>Debug Storage & Files</h1>";
+        $results[] = "<h1>Fixing Storage...</h1>";
 
-        // 1. Check Link Status
-        $results[] = "<h3>Link Status:</h3>";
-        if (is_link($link)) {
-            $results[] = "✅ Symlink exists.";
-            $realPath = readlink($link);
-            $results[] = "   Target: " . $realPath;
-            $results[] = "   Valid: " . (is_dir($realPath) ? "YES" : "NO - Broken Link");
+        // 1. Fix Directory Structure
+        $targetDir = storage_path('app/public/images/layanan');
+        if (!file_exists($targetDir)) {
+            mkdir($targetDir, 0755, true);
+            $results[] = "✅ Created directory: $targetDir";
         } else {
-            $results[] = "❌ Symlink MISSING at $link";
+            $results[] = "info: Directory already exists.";
         }
 
-        // 2. Check Upload Directory
-        $results[] = "<h3>Upload Directory ($uploadPath):</h3>";
-        if (is_dir($uploadPath)) {
-            $results[] = "✅ Directory exists.";
-            $files = scandir($uploadPath);
-            $results[] = "<ul>";
-            foreach ($files as $file) {
-                if ($file != "." && $file != "..") {
-                    $url = "https://dapur-nyonya-production.up.railway.app/storage/images/layanan/" . $file;
-                    $results[] = "<li>$file - <a href='$url' target='_blank'>Try Open</a></li>";
-                }
-            }
-            $results[] = "</ul>";
-        } else {
-            $results[] = "❌ Directory DOES NOT EXIST.";
+        // 2. Fix Symlink
+        $link = public_path('storage');
+        if (file_exists($link)) {
+            unlink($link); // Force delete broken link
+            $results[] = "Deleted old link/file.";
         }
 
-        // 3. Re-Link Button (Manual Trigger basically)
-        // Only run if specifically asked to avoid loop
-        if (request()->has('relink')) {
-            try {
-                Artisan::call('storage:link');
-                $results[] = "<br><b>Ran artisan storage:link</b>";
-            } catch (\Exception $e) {
-                $results[] = "<br><b>Error running artisan:</b> " . $e->getMessage();
-            }
+        try {
+            Artisan::call('storage:link');
+            $results[] = "✅ Ran 'php artisan storage:link' success.";
+        } catch (\Exception $e) {
+            $results[] = "⚠️ Artisan failed: " . $e->getMessage();
+            // Fallback manual
+            $target = storage_path('app/public');
+            symlink($target, $link);
+            $results[] = "✅ Created manual symlink success.";
         }
 
+        $results[] = "<hr><h3>Status Akhir:</h3>";
+        $results[] = "Storage Link Exists: " . (file_exists(public_path('storage')) ? "YES ✅" : "NO ❌");
+        $results[] = "Upload Folder Exists: " . (file_exists(storage_path('app/public/images/layanan')) ? "YES ✅" : "NO ❌");
+        
         return implode("<br>", $results);
 
     } catch (\Throwable $e) {
