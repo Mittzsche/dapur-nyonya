@@ -64,7 +64,9 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
 # Create storage link directory structure
-RUN mkdir -p /var/www/html/public/storage
+RUN mkdir -p /var/www/html/public/storage \
+    && mkdir -p /var/log/supervisor \
+    && mkdir -p /var/run
 
 # Expose port
 EXPOSE 8080
