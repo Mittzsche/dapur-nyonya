@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # Laravel Backend API
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: dapur-nyonya-app
+    restart: unless-stopped
+    ports:
+      - "8000:8080"
+    environment:
+      - APP_NAME=DapurNyonya
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - APP_URL=${APP_URL:-http://localhost:8000}
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_DATABASE:-dapur_nyonya}
+      - DB_USERNAME=${DB_USERNAME:-dapur_nyonya}
+      - DB_PASSWORD=${DB_PASSWORD:-secret}
+      - CACHE_DRIVER=database
+      - SESSION_DRIVER=database
+      - QUEUE_CONNECTION=database
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - storage_data:/var/www/html/storage/app
+    networks:
+      - dapur-nyonya-network
+
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: dapur-nyonya-db
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE:-dapur_nyonya}
+      - MYSQL_USER=${DB_USERNAME:-dapur_nyonya}
+      - MYSQL_PASSWORD=${DB_PASSWORD:-secret}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-rootsecret}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dapur-nyonya-network
+
+volumes:
+  mysql_data:
+    driver: local
+  storage_data:
+    driver: local
+
+networks:
+  dapur-nyonya-network:
+    driver: bridge

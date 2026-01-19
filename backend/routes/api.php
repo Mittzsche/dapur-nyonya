@@ -48,6 +48,14 @@ Route::get('/testimoni', [TestimoniController::class, 'index']);
 // Galeri publik
 Route::get('/galeri', [GaleriController::class, 'index']);
 
+// Health check endpoint for Docker/Kubernetes
+Route::get('/health', function () {
+    return response()->json([
+        'status' => 'ok',
+        'timestamp' => now()->toISOString(),
+    ]);
+});
+
 // ============================================
 // PROTECTED ROUTES (Butuh autentikasi admin)
 // ============================================
