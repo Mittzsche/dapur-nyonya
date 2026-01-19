@@ -1,4 +1,4 @@
-# Stage 1: Build stage
+# Simple Dockerfile for Railway
 FROM composer:latest AS composer-build
 
 WORKDIR /app
@@ -15,13 +15,11 @@ COPY . .
 # Generate optimized autoloader
 RUN composer dump-autoload --optimize --no-dev
 
-# Stage 2: Production stage
-FROM php:8.4-fpm-alpine
+# Production stage
+FROM php:8.4-cli-alpine
 
-# Install system dependencies
+# Install system dependencies and PHP extensions
 RUN apk add --no-cache \
-    nginx \
-    supervisor \
     libpng-dev \
     libjpeg-turbo-dev \
     freetype-dev \
@@ -43,15 +41,6 @@ RUN apk add --no-cache \
 # Configure PHP for production
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-# Copy custom PHP config
-COPY docker/php.ini /usr/local/etc/php/conf.d/custom.ini
-
-# Copy nginx config
-COPY docker/nginx.conf /etc/nginx/http.d/default.conf
-
-# Copy supervisor config
-COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
 WORKDIR /var/www/html
 
 # Copy application from build stage
@@ -63,17 +52,15 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
-# Create storage link directory structure
-RUN mkdir -p /var/www/html/public/storage \
-    && mkdir -p /var/log/supervisor \
-    && mkdir -p /var/run
+# Create storage directories
+RUN mkdir -p /var/www/html/storage/logs \
+    && mkdir -p /var/www/html/storage/framework/cache \
+    && mkdir -p /var/www/html/storage/framework/sessions \
+    && mkdir -p /var/www/html/storage/framework/views \
+    && mkdir -p /var/www/html/public/storage
 
-# Expose port
+# Expose port (Railway uses $PORT env variable)
 EXPOSE 8080
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:8080/api/health || exit 1
-
-# Start supervisor (manages nginx and php-fpm)
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+# Start Laravel using artisan serve
+CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
