@@ -9,23 +9,33 @@ Route::get('/', function () {
 Route::get('/fix-storage-link', function () {
     $target = storage_path('app/public');
     $link = public_path('storage');
-    
-    // Check if link already exists
+
+    // Force delete existing link if it exists
     if (file_exists($link)) {
-        return 'Storage link already exists.';
+        unlink($link);
     }
 
-    // Try artisan command first
+    $results = [];
+    $results[] = "Target Directory: " . $target;
+    $results[] = "Target Exists: " . (is_dir($target) ? 'YES' : 'NO');
+
+    // Create target directory if it doesn't exist
+    if (!is_dir($target)) {
+        mkdir($target, 0755, true);
+        $results[] = "Created target directory.";
+    }
+
     try {
         Artisan::call('storage:link');
-        return 'Storage link created successfully via Artisan.';
+        $results[] = "SUCCESS: Storage link recreated via Artisan.";
     } catch (\Exception $e) {
-        // Fallback: Try manual symlink (sometimes required on shared hosts/some envs)
         try {
             symlink($target, $link);
-            return 'Storage link created successfully via symlink().';
+            $results[] = "SUCCESS: Storage link recreated via symlink().";
         } catch (\Exception $e2) {
-             return 'Failed to create storage link: ' . $e->getMessage();
+            $results[] = "ERROR: Failed to create link -> " . $e2->getMessage();
         }
     }
+
+    return implode("<br>", $results);
 });
