@@ -2,12 +2,13 @@ import axios from 'axios'
 
 // Base API configuration
 // Base API configuration
-const apiUrl = process.env.VUE_APP_API_URL || 'http://localhost:8000/api'
-const baseURL = apiUrl.endsWith('/api') ? apiUrl : `${apiUrl.replace(/\/$/, '')}/api`
+// HARDCODED FOR PRODUCTION STABILITY
+const apiUrl = 'https://dapur-nyonya-production.up.railway.app/api'
+const baseURL = apiUrl
 
 const api = axios.create({
   baseURL,
-  timeout: 10000, // 10 seconds timeout
+  timeout: 15000, // 15 seconds timeout
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'

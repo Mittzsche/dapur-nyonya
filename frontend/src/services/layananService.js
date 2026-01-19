@@ -20,9 +20,9 @@ export const layananService = {
 
     // Admin: Update layanan
     update(id, formData) {
+        formData.append('_method', 'PUT')
         return api.post(`/admin/layanan/${id}`, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-            params: { _method: 'PUT' }
+            headers: { 'Content-Type': 'multipart/form-data' }
         })
     },
 

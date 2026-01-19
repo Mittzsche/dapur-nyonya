@@ -1,68 +1,46 @@
 <template>
-  <div class="admin-layout">
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <h2>🍽️ Dapur Nyonya</h2>
-        <p>Admin Panel</p>
-      </div>
-      <nav class="sidebar-nav">
-        <router-link to="/admin/dashboard" class="nav-item">📊 Dashboard</router-link>
-        <router-link to="/admin/produk" class="nav-item">📦 Produk</router-link>
-        <router-link to="/admin/pemesanan" class="nav-item">📋 Pemesanan</router-link>
-        <router-link to="/admin/penjualan" class="nav-item">💰 Penjualan</router-link>
-        <div class="nav-divider"></div>
-        <router-link to="/admin/konten" class="nav-item">📝 Konten</router-link>
-        <router-link to="/admin/testimoni" class="nav-item">💬 Testimoni</router-link>
-        <router-link to="/admin/galeri" class="nav-item">🖼️ Galeri</router-link>
-      </nav>
-      <div class="sidebar-footer">
-        <button @click="handleLogout" class="logout-btn">🚪 Logout</button>
-      </div>
-    </aside>
+  <AdminLayout title="Kelola Produk">
+    <template #header-actions>
+      <router-link to="/admin/produk/tambah" class="btn btn-primary">+ Tambah Produk</router-link>
+    </template>
 
-    <main class="main-content">
-      <header class="header">
-        <h1>Kelola Produk</h1>
-        <router-link to="/admin/produk/tambah" class="btn btn-primary">+ Tambah Produk</router-link>
-      </header>
+    <div v-if="loading" class="loading"><div class="spinner"></div></div>
+    
+    <div v-else-if="produkList.length === 0" class="empty-state">
+      <p>Belum ada produk. Klik tombol di atas untuk menambahkan.</p>
+    </div>
 
-      <div class="content">
-        <div v-if="loading" class="loading"><div class="spinner"></div></div>
-        
-        <div v-else-if="produkList.length === 0" class="empty-state">
-          <p>Belum ada produk. Klik tombol di atas untuk menambahkan.</p>
-        </div>
-
-        <div v-else class="produk-grid">
-          <div v-for="item in produkList" :key="item.id_layanan" class="produk-card">
-            <div class="produk-image">
-              <img v-if="item.gambar" :src="getImageUrl(item.gambar)" :alt="item.nama_paket">
-              <div v-else class="image-placeholder">
-                <span>📦</span>
-              </div>
-            </div>
-            <div class="produk-info">
-              <h3>{{ item.nama_paket }}</h3>
-              <p class="price">Rp {{ formatPrice(item.harga) }}</p>
-              <p class="desc">{{ truncate(item.deskripsi, 80) }}</p>
-            </div>
-            <div class="produk-actions">
-              <router-link :to="`/admin/produk/edit/${item.id_layanan}`" class="btn btn-sm btn-outline">Edit</router-link>
-              <button @click="deleteProduk(item.id_layanan)" class="btn btn-sm btn-danger">Hapus</button>
-            </div>
+    <div v-else class="produk-grid">
+      <div v-for="item in produkList" :key="item.id_layanan" class="produk-card">
+        <div class="produk-image">
+          <img v-if="item.gambar" :src="getImageUrl(item.gambar)" :alt="item.nama_paket">
+          <div v-else class="image-placeholder">
+            <span>📦</span>
           </div>
         </div>
+        <div class="produk-info">
+          <h3>{{ item.nama_paket }}</h3>
+          <p class="price">Rp {{ formatPrice(item.harga) }}</p>
+          <p class="desc">{{ truncate(item.deskripsi, 80) }}</p>
+        </div>
+        <div class="produk-actions">
+          <router-link :to="`/admin/produk/edit/${item.id_layanan}`" class="btn btn-sm btn-outline">Edit</router-link>
+          <button @click="deleteProduk(item.id_layanan)" class="btn btn-sm btn-danger">Hapus</button>
+        </div>
       </div>
-    </main>
-  </div>
+    </div>
+  </AdminLayout>
 </template>
 
 <script>
-import authService from '@/services/authService'
+import AdminLayout from '@/layouts/AdminLayout.vue'
 import layananService from '@/services/layananService'
 
 export default {
   name: 'AdminProduk',
+  components: {
+    AdminLayout
+  },
   data() {
     return {
       produkList: [],
@@ -91,9 +69,7 @@ export default {
     },
     getImageUrl(path) {
       if (!path) return ''
-      const apiUrl = process.env.VUE_APP_API_URL || 'http://localhost:8000/api'
-      const baseUrl = apiUrl.replace(/\/api\/?$/, '')
-      return `${baseUrl}/storage/${path}`
+      return `https://dapur-nyonya-production.up.railway.app/storage/${path}`
     },
     async deleteProduk(id) {
       if (confirm('Hapus produk ini?')) {
@@ -104,64 +80,12 @@ export default {
           alert('Gagal menghapus produk')
         }
       }
-    },
-    handleLogout() {
-      authService.clearAuth()
-      this.$router.push('/admin/login')
     }
   }
 }
 </script>
 
 <style scoped>
-.admin-layout { display: flex; min-height: 100vh; }
-
-.sidebar {
-  width: 250px;
-  background: #2D2D2D;
-  color: white;
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebar-header { padding: 1.5rem; border-bottom: 1px solid #444; }
-.sidebar-header h2 { font-size: 1.25rem; margin-bottom: 0.25rem; }
-.sidebar-header p { font-size: 0.8rem; opacity: 0.7; }
-
-.sidebar-nav { flex: 1; padding: 1rem 0; }
-.nav-item { display: block; padding: 0.75rem 1.5rem; color: #ccc; transition: all 0.3s ease; }
-.nav-item:hover, .nav-item.router-link-active { background: #444; color: white; }
-
-.nav-divider { height: 1px; background: #444; margin: 0.5rem 1.5rem; }
-
-.sidebar-footer { padding: 1rem 1.5rem; border-top: 1px solid #444; }
-.logout-btn {
-  width: 100%;
-  padding: 0.75rem;
-  background: transparent;
-  border: 1px solid #666;
-  color: #ccc;
-  cursor: pointer;
-  border-radius: var(--radius-md);
-  transition: all 0.3s ease;
-}
-.logout-btn:hover { background: #dc3545; border-color: #dc3545; color: white; }
-
-.main-content { flex: 1; background: #f5f5f5; }
-
-.header {
-  background: white;
-  padding: 1.5rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.header h1 { font-size: 1.5rem; color: var(--text-primary); }
-
-.content { padding: 2rem; }
-
 .empty-state {
   text-align: center;
   padding: 4rem;
@@ -237,5 +161,11 @@ export default {
 .btn-danger {
   background: var(--primary);
   color: white;
+}
+
+@media (max-width: 576px) {
+  .produk-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

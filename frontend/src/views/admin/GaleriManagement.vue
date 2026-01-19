@@ -1,57 +1,32 @@
 <template>
-  <div class="admin-layout">
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <h2>🍽️ Dapur Nyonya</h2>
-        <p>Admin Panel</p>
-      </div>
-      <nav class="sidebar-nav">
-        <router-link to="/admin/dashboard" class="nav-item">📊 Dashboard</router-link>
-        <router-link to="/admin/produk" class="nav-item">📦 Produk</router-link>
-        <router-link to="/admin/pemesanan" class="nav-item">📋 Pemesanan</router-link>
-        <router-link to="/admin/penjualan" class="nav-item">💰 Penjualan</router-link>
-        <div class="nav-divider"></div>
-        <router-link to="/admin/konten" class="nav-item">📝 Konten</router-link>
-        <router-link to="/admin/testimoni" class="nav-item">💬 Testimoni</router-link>
-        <router-link to="/admin/galeri" class="nav-item">🖼️ Galeri</router-link>
-      </nav>
-      <div class="sidebar-footer">
-        <button @click="handleLogout" class="logout-btn">🚪 Logout</button>
-      </div>
-    </aside>
+  <AdminLayout title="Kelola Galeri">
+    <template #header-actions>
+      <button class="btn btn-primary" @click="showAddModal = true">+ Tambah Gambar</button>
+    </template>
 
-    <main class="main-content">
-      <header class="header">
-        <h1>Kelola Galeri</h1>
-        <button class="btn btn-primary" @click="showAddModal = true">+ Tambah Gambar</button>
-      </header>
+    <div v-if="loading" class="loading"><div class="spinner"></div></div>
 
-      <div class="content">
-        <div v-if="loading" class="loading"><div class="spinner"></div></div>
+    <div v-else-if="galeriList.length === 0" class="empty-state">
+      <p>Belum ada gambar galeri. Klik tombol di atas untuk menambahkan.</p>
+    </div>
 
-        <div v-else-if="galeriList.length === 0" class="empty-state">
-          <p>Belum ada gambar galeri. Klik tombol di atas untuk menambahkan.</p>
+    <div v-else class="galeri-grid">
+      <div v-for="item in galeriList" :key="item.id_galeri" class="galeri-card">
+        <div class="galeri-image">
+          <img :src="getImageUrl(item.gambar)" :alt="item.caption">
         </div>
-
-        <div v-else class="galeri-grid">
-          <div v-for="item in galeriList" :key="item.id_galeri" class="galeri-card">
-            <div class="galeri-image">
-              <img :src="getImageUrl(item.gambar)" :alt="item.caption">
-            </div>
-            <div class="galeri-info">
-              <p class="caption">{{ item.caption || 'Tidak ada caption' }}</p>
-              <span :class="['badge', item.is_active ? 'badge-success' : 'badge-secondary']">
-                {{ item.is_active ? 'Aktif' : 'Nonaktif' }}
-              </span>
-            </div>
-            <div class="galeri-actions">
-              <button class="btn btn-sm btn-outline" @click="editGaleri(item)">Edit</button>
-              <button class="btn btn-sm btn-danger" @click="confirmDelete(item)">Hapus</button>
-            </div>
-          </div>
+        <div class="galeri-info">
+          <p class="caption">{{ item.caption || 'Tidak ada caption' }}</p>
+          <span :class="['badge', item.is_active ? 'badge-success' : 'badge-secondary']">
+            {{ item.is_active ? 'Aktif' : 'Nonaktif' }}
+          </span>
+        </div>
+        <div class="galeri-actions">
+          <button class="btn btn-sm btn-outline" @click="editGaleri(item)">Edit</button>
+          <button class="btn btn-sm btn-danger" @click="confirmDelete(item)">Hapus</button>
         </div>
       </div>
-    </main>
+    </div>
 
     <!-- Add/Edit Modal -->
     <div v-if="showAddModal || editingItem" class="modal-overlay" @click.self="closeModal">
@@ -119,15 +94,18 @@
         </div>
       </div>
     </div>
-  </div>
+  </AdminLayout>
 </template>
 
 <script>
+import AdminLayout from '@/layouts/AdminLayout.vue'
 import galeriService from '@/services/galeriService'
-import authService from '@/services/authService'
 
 export default {
   name: 'GaleriManagement',
+  components: {
+    AdminLayout
+  },
   data() {
     return {
       loading: true,
@@ -236,112 +214,12 @@ export default {
       } finally {
         this.saving = false
       }
-    },
-    handleLogout() {
-      authService.clearAuth()
-      this.$router.push('/admin/login')
     }
   }
 }
 </script>
 
 <style scoped>
-.admin-layout {
-  display: flex;
-  min-height: 100vh;
-}
-
-.sidebar {
-  width: 250px;
-  background: #2D2D2D;
-  color: white;
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebar-header {
-  padding: 1.5rem;
-  border-bottom: 1px solid #444;
-}
-
-.sidebar-header h2 {
-  font-size: 1.25rem;
-  margin-bottom: 0.25rem;
-}
-
-.sidebar-header p {
-  font-size: 0.8rem;
-  opacity: 0.7;
-}
-
-.sidebar-nav {
-  flex: 1;
-  padding: 1rem 0;
-}
-
-.nav-item {
-  display: block;
-  padding: 0.75rem 1.5rem;
-  color: #ccc;
-  transition: all 0.3s ease;
-}
-
-.nav-item:hover, .nav-item.router-link-active {
-  background: #444;
-  color: white;
-}
-
-.nav-divider {
-  height: 1px;
-  background: #444;
-  margin: 0.5rem 1.5rem;
-}
-
-.sidebar-footer {
-  padding: 1rem 1.5rem;
-  border-top: 1px solid #444;
-}
-
-.logout-btn {
-  width: 100%;
-  padding: 0.75rem;
-  background: transparent;
-  border: 1px solid #666;
-  color: #ccc;
-  cursor: pointer;
-  border-radius: var(--radius-md);
-  transition: all 0.3s ease;
-}
-
-.logout-btn:hover {
-  background: #dc3545;
-  border-color: #dc3545;
-  color: white;
-}
-
-.main-content {
-  flex: 1;
-  background: #f5f5f5;
-}
-
-.header {
-  background: white;
-  padding: 1.5rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.header h1 {
-  font-size: 1.5rem;
-  color: var(--text-primary);
-}
-
-.content {
-  padding: 2rem;
-}
-
 .galeri-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -385,15 +263,8 @@ export default {
   font-size: 0.75rem;
 }
 
-.badge-success {
-  background: #d4edda;
-  color: #155724;
-}
-
-.badge-secondary {
-  background: #e2e3e5;
-  color: #383d41;
-}
+.badge-success { background: #d4edda; color: #155724; }
+.badge-secondary { background: #e2e3e5; color: #383d41; }
 
 .galeri-actions {
   padding: 0 1rem 1rem;
@@ -401,21 +272,9 @@ export default {
   gap: 0.5rem;
 }
 
-.btn-sm {
-  padding: 0.4rem 0.75rem;
-  font-size: 0.85rem;
-}
-
-.btn-danger {
-  background: var(--primary);
-  color: white;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 4rem;
-  color: var(--text-secondary);
-}
+.btn-sm { padding: 0.4rem 0.75rem; font-size: 0.85rem; }
+.btn-danger { background: var(--primary); color: white; }
+.empty-state { text-align: center; padding: 4rem; color: var(--text-secondary); }
 
 /* Modal */
 .modal-overlay {
@@ -429,6 +288,7 @@ export default {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: 1rem;
 }
 
 .modal {
@@ -440,81 +300,22 @@ export default {
   overflow-y: auto;
 }
 
-.modal-sm {
-  max-width: 400px;
-}
+.modal-sm { max-width: 400px; }
+.modal-header { padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.modal-header h3 { margin: 0; font-size: 1.25rem; }
+.modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+.modal-body { padding: 1.5rem; }
+.modal-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; gap: 1rem; justify-content: flex-end; }
+.form-group { margin-bottom: 1rem; }
+.form-label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+.form-control { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-md); }
+.form-check { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+.image-upload-area { display: flex; align-items: center; gap: 1rem; }
+.preview { width: 150px; height: 110px; border: 2px solid var(--border); overflow: hidden; }
+.preview img { width: 100%; height: 100%; object-fit: cover; }
 
-.modal-header {
-  padding: 1.5rem;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.modal-header h3 {
-  margin: 0;
-}
-
-.modal-close {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-.modal-body {
-  padding: 1.5rem;
-}
-
-.modal-footer {
-  padding: 1rem 1.5rem;
-  border-top: 1px solid var(--border);
-  display: flex;
-  gap: 1rem;
-  justify-content: flex-end;
-}
-
-.form-group {
-  margin-bottom: 1rem;
-}
-
-.form-label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.form-control {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-}
-
-.form-check {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-}
-
-.image-upload-area {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.preview {
-  width: 150px;
-  height: 110px;
-  border: 2px solid var(--border);
-  overflow: hidden;
-}
-
-.preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+@media (max-width: 576px) {
+  .galeri-grid { grid-template-columns: 1fr; }
+  .image-upload-area { flex-direction: column; align-items: flex-start; }
 }
 </style>
