@@ -159,7 +159,9 @@ export default {
     },
     getImageUrl(path) {
       if (!path) return ''
-      return `http://localhost:8000/storage/${path}`
+      const apiUrl = process.env.VUE_APP_API_URL || 'http://localhost:8000/api'
+      const baseUrl = apiUrl.replace(/\/api\/?$/, '')
+      return `${baseUrl}/storage/${path}`
     },
     handleImageSelect(event) {
       const file = event.target.files[0]
