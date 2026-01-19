@@ -24,13 +24,17 @@
 
         <div v-else class="layanan-grid">
           <div v-for="layanan in layananList" :key="layanan.id_layanan" class="layanan-card">
-            <div class="layanan-image-circle">
+            <div class="layanan-image">
               <img v-if="layanan.gambar" :src="getImageUrl(layanan.gambar)" :alt="layanan.nama_paket">
-              <span v-else>🍱</span>
+              <div v-else class="placeholder">
+                <span>🍱</span>
+              </div>
             </div>
-            <h3 class="layanan-title">{{ layanan.nama_paket }}</h3>
-            <p class="layanan-desc">{{ layanan.deskripsi }}</p>
-            <router-link to="/hubungi" class="btn btn-outline-dark btn-sm">Hubungi Kami</router-link>
+            <div class="layanan-content">
+              <h3 class="layanan-title">{{ layanan.nama_paket }}</h3>
+              <p class="layanan-desc">{{ layanan.deskripsi }}</p>
+              <router-link to="/hubungi" class="btn btn-primary btn-sm">Hubungi Kami</router-link>
+            </div>
           </div>
         </div>
       </div>
@@ -121,52 +125,69 @@ export default {
 }
 
 .layanan-card {
-  border: 2px solid var(--border);
-  padding: 2rem;
+  border: none;
+  border-radius: var(--radius-lg);
   text-align: center;
   background: white;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(196, 30, 58, 0.1);
+  overflow: hidden;
 }
 
 .layanan-card:hover {
-  border-color: var(--primary);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(196, 30, 58, 0.2);
 }
 
-.layanan-image-circle {
-  width: 100px;
-  height: 100px;
-  border: 2px solid var(--border);
-  border-radius: 50%;
+.layanan-image {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: linear-gradient(135deg, #FEF0F2 0%, #FFE5E8 100%);
+  overflow: hidden;
+  position: relative;
+}
+
+.layanan-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.layanan-image .placeholder {
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 1.5rem;
-  background: #f9f9f9;
 }
 
-.layanan-image-circle span {
-  font-size: 3rem;
+.layanan-image .placeholder span {
+  font-size: 4rem;
+}
+
+.layanan-content {
+  padding: 1.5rem;
 }
 
 .layanan-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
 }
 
 .layanan-desc {
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   line-height: 1.6;
   margin-bottom: 1.5rem;
-  min-height: 60px;
+  min-height: 50px;
 }
 
 .btn-sm {
-  padding: 0.5rem 1.5rem;
-  font-size: 0.85rem;
+  padding: 0.6rem 2rem;
+  font-size: 0.9rem;
+  border-radius: 50px;
 }
 
 .empty-state {

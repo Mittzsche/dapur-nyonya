@@ -59,6 +59,36 @@
               </div>
             </div>
 
+            <!-- Hero Banner 1 -->
+            <div class="form-group">
+              <label class="form-label">Banner Hero 1 - Mengapa Memilih Kami (4:3)</label>
+              <div class="image-upload">
+                <div v-if="heroBanner1Preview || form.home_hero_1" class="image-preview landscape">
+                  <img :src="heroBanner1Preview || getImageUrl(form.home_hero_1)" alt="Hero 1">
+                </div>
+                <div v-else class="image-placeholder landscape">
+                  <span>🚚</span>
+                </div>
+                <input type="file" @change="e => handleImage(e, 'heroBanner1')" accept="image/*" ref="heroBanner1Input" style="display:none">
+                <button type="button" class="btn btn-outline" @click="$refs.heroBanner1Input.click()">Upload</button>
+              </div>
+            </div>
+
+            <!-- Hero Banner 2 -->
+            <div class="form-group">
+              <label class="form-label">Banner Hero 2 - Mengapa Memilih Kami (4:3)</label>
+              <div class="image-upload">
+                <div v-if="heroBanner2Preview || form.home_hero_2" class="image-preview landscape">
+                  <img :src="heroBanner2Preview || getImageUrl(form.home_hero_2)" alt="Hero 2">
+                </div>
+                <div v-else class="image-placeholder landscape">
+                  <span>⚡</span>
+                </div>
+                <input type="file" @change="e => handleImage(e, 'heroBanner2')" accept="image/*" ref="heroBanner2Input" style="display:none">
+                <button type="button" class="btn btn-outline" @click="$refs.heroBanner2Input.click()">Upload</button>
+              </div>
+            </div>
+
             <!-- Tentang Image -->
             <div class="form-group">
               <label class="form-label">Gambar Section Tentang (4:3)</label>
@@ -163,6 +193,8 @@ export default {
         owner_image: '',
         latar_belakang: '',
         home_logo: '',
+        home_hero_1: '',
+        home_hero_2: '',
         home_tentang_image: '',
         home_cara_pemesanan: ''
       },
@@ -170,6 +202,10 @@ export default {
       ownerImageFile: null,
       homeLogoPreview: null,
       homeLogoFile: null,
+      heroBanner1Preview: null,
+      heroBanner1File: null,
+      heroBanner2Preview: null,
+      heroBanner2File: null,
       tentangImagePreview: null,
       tentangImageFile: null,
       caraPemesananPreview: null,
@@ -190,6 +226,8 @@ export default {
         if (konten.tentang_owner_image) this.form.owner_image = konten.tentang_owner_image.value
         if (konten.tentang_latar_belakang) this.form.latar_belakang = konten.tentang_latar_belakang.value
         if (konten.home_logo) this.form.home_logo = konten.home_logo.value
+        if (konten.home_hero_1) this.form.home_hero_1 = konten.home_hero_1.value
+        if (konten.home_hero_2) this.form.home_hero_2 = konten.home_hero_2.value
         if (konten.home_tentang_image) this.form.home_tentang_image = konten.home_tentang_image.value
         if (konten.home_cara_pemesanan) this.form.home_cara_pemesanan = konten.home_cara_pemesanan.value
       } catch (error) {
@@ -210,6 +248,12 @@ export default {
       } else if (type === 'homeLogo') {
         this.homeLogoFile = file
         this.homeLogoPreview = preview
+      } else if (type === 'heroBanner1') {
+        this.heroBanner1File = file
+        this.heroBanner1Preview = preview
+      } else if (type === 'heroBanner2') {
+        this.heroBanner2File = file
+        this.heroBanner2Preview = preview
       } else if (type === 'tentangImage') {
         this.tentangImageFile = file
         this.tentangImagePreview = preview
@@ -230,6 +274,14 @@ export default {
         if (this.homeLogoFile) {
           await kontenService.uploadImage('home_logo', this.homeLogoFile)
           this.homeLogoFile = null
+        }
+        if (this.heroBanner1File) {
+          await kontenService.uploadImage('home_hero_1', this.heroBanner1File)
+          this.heroBanner1File = null
+        }
+        if (this.heroBanner2File) {
+          await kontenService.uploadImage('home_hero_2', this.heroBanner2File)
+          this.heroBanner2File = null
         }
         if (this.tentangImageFile) {
           await kontenService.uploadImage('home_tentang_image', this.tentangImageFile)

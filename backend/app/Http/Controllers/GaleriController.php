@@ -42,26 +42,33 @@ class GaleriController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $request->validate([
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'caption' => 'nullable|string|max:255',
-            'urutan' => 'nullable|integer',
-        ]);
+        try {
+            $request->validate([
+                'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
+                'caption' => 'nullable|string|max:255',
+                'urutan' => 'nullable|integer',
+            ]);
 
-        $path = $request->file('gambar')->store('galeri', 'public');
+            $path = $request->file('gambar')->store('galeri', 'public');
 
-        $galeri = Galeri::create([
-            'gambar' => $path,
-            'caption' => $request->caption,
-            'urutan' => $request->urutan ?? 0,
-            'is_active' => true,
-        ]);
+            $galeri = Galeri::create([
+                'gambar' => $path,
+                'caption' => $request->caption,
+                'urutan' => $request->urutan ?? 0,
+                'is_active' => true,
+            ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Galeri berhasil ditambahkan',
-            'data' => $galeri,
-        ], 201);
+            return response()->json([
+                'success' => true,
+                'message' => 'Galeri berhasil ditambahkan',
+                'data' => $galeri,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal upload: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**

@@ -20,25 +20,22 @@
           </div>
         </div>
         
-        <!-- Featured Images from Galeri -->
+        <!-- Promotional Banners (Mengapa Memilih Kami) -->
         <div class="hero-images">
-          <div v-for="(item, index) in heroGaleri" :key="index" class="hero-image-box">
-            <img v-if="item.gambar" :src="getImageUrl(item.gambar)" :alt="item.caption">
+          <div class="hero-image-box">
+            <img v-if="heroBanner1" :src="getImageUrl(heroBanner1)" alt="Mengapa Memilih Kami">
             <template v-else>
-              <span>📸</span>
-              <p>Gambar</p>
+              <span>🚚</span>
+              <p>Pesan Antar</p>
             </template>
           </div>
-          <template v-if="heroGaleri.length === 0">
-            <div class="hero-image-box">
-              <span>📸</span>
-              <p>Gambar</p>
-            </div>
-            <div class="hero-image-box">
-              <span>📸</span>
-              <p>Gambar</p>
-            </div>
-          </template>
+          <div class="hero-image-box">
+            <img v-if="heroBanner2" :src="getImageUrl(heroBanner2)" alt="Mengapa Memilih Kami">
+            <template v-else>
+              <span>⚡</span>
+              <p>Cepat & Efisien</p>
+            </template>
+          </div>
         </div>
       </div>
     </section>
@@ -109,19 +106,31 @@
       <div class="container">
         <h2 class="section-title">Galeri Dapur Nyonya</h2>
         
-        <div class="galeri-grid">
-          <div v-for="(item, index) in displayGaleri" :key="index" class="galeri-item">
-            <img v-if="item.gambar" :src="getImageUrl(item.gambar)" :alt="item.caption">
-            <template v-else>
-              <span>📸</span>
-              <p>Gambar</p>
-            </template>
+        <!-- Auto-scroll Carousel -->
+        <div class="galeri-carousel" 
+             ref="galeriCarousel"
+             @mouseenter="pauseAutoScroll"
+             @mouseleave="resumeAutoScroll"
+             @touchstart="pauseAutoScroll"
+             @touchend="resumeAutoScroll">
+          <div class="galeri-track" ref="galeriTrack">
+            <div v-for="(item, index) in infiniteGaleri" :key="'galeri-' + index" class="galeri-item">
+              <img v-if="item.gambar" :src="getImageUrl(item.gambar)" :alt="item.caption">
+              <template v-else>
+                <span>📸</span>
+                <p>Gambar</p>
+              </template>
+            </div>
           </div>
-          <template v-if="displayGaleri.length === 0">
-            <div class="galeri-item"><span>📸</span><p>Gambar</p></div>
-            <div class="galeri-item"><span>📸</span><p>Gambar</p></div>
-            <div class="galeri-item"><span>📸</span><p>Gambar</p></div>
-          </template>
+        </div>
+        
+        <!-- Navigation dots -->
+        <div class="galeri-dots" v-if="galeriList.length > 0">
+          <button v-for="(_, index) in galeriList" 
+                  :key="index" 
+                  :class="['dot', currentGaleriIndex === index ? 'active' : '']"
+                  @click="scrollToGaleri(index)">
+          </button>
         </div>
       </div>
     </section>
@@ -189,17 +198,21 @@ export default {
       galeriList: [],
       testimoniList: [],
       heroLogo: '',
+      heroBanner1: '',
+      heroBanner2: '',
       tentangImage: '',
       caraPemesananImage: '',
-      loading: true
+      loading: true,
+      galeriScrollInterval: null,
+      currentGaleriIndex: 0,
+      isAutoScrollPaused: false
     }
   },
   computed: {
-    heroGaleri() {
-      return this.galeriList.slice(0, 2)
-    },
-    displayGaleri() {
-      return this.galeriList.slice(0, 3)
+    infiniteGaleri() {
+      // Triple the array for seamless looping
+      if (this.galeriList.length === 0) return []
+      return [...this.galeriList, ...this.galeriList, ...this.galeriList]
     },
     displayTestimoni() {
       return this.testimoniList.slice(0, 3)
@@ -213,6 +226,12 @@ export default {
       this.fetchKonten()
     ])
     this.loading = false
+    this.$nextTick(() => {
+      this.initGaleriCarousel()
+    })
+  },
+  beforeUnmount() {
+    this.stopAutoScroll()
   },
   methods: {
     async fetchLayanan() {
@@ -244,6 +263,8 @@ export default {
         const response = await kontenService.getAll()
         const konten = response.data.data
         if (konten.home_logo) this.heroLogo = konten.home_logo.value
+        if (konten.home_hero_1) this.heroBanner1 = konten.home_hero_1.value
+        if (konten.home_hero_2) this.heroBanner2 = konten.home_hero_2.value
         if (konten.home_tentang_image) this.tentangImage = konten.home_tentang_image.value
         if (konten.home_cara_pemesanan) this.caraPemesananImage = konten.home_cara_pemesanan.value
       } catch (error) {
@@ -256,6 +277,67 @@ export default {
     },
     formatPrice(price) {
       return parseFloat(price).toLocaleString('id-ID')
+    },
+    initGaleriCarousel() {
+      if (this.galeriList.length === 0) return
+      
+      // Start at the middle set (so we can scroll both ways)
+      this.$nextTick(() => {
+        const carousel = this.$refs.galeriCarousel
+        if (carousel) {
+          const itemWidth = carousel.offsetWidth / 3 + 24 // item width + gap
+          carousel.scrollLeft = itemWidth * this.galeriList.length
+          this.startAutoScroll()
+        }
+      })
+    },
+    startAutoScroll() {
+      this.stopAutoScroll()
+      this.galeriScrollInterval = setInterval(() => {
+        if (!this.isAutoScrollPaused) {
+          this.scrollGaleriNext()
+        }
+      }, 3000)
+    },
+    stopAutoScroll() {
+      if (this.galeriScrollInterval) {
+        clearInterval(this.galeriScrollInterval)
+        this.galeriScrollInterval = null
+      }
+    },
+    pauseAutoScroll() {
+      this.isAutoScrollPaused = true
+    },
+    resumeAutoScroll() {
+      this.isAutoScrollPaused = false
+    },
+    scrollGaleriNext() {
+      const carousel = this.$refs.galeriCarousel
+      if (!carousel) return
+      
+      const itemWidth = carousel.offsetWidth / 3 + 24
+      const maxScroll = carousel.scrollWidth - carousel.offsetWidth
+      
+      carousel.scrollBy({ left: itemWidth, behavior: 'smooth' })
+      
+      this.currentGaleriIndex = (this.currentGaleriIndex + 1) % this.galeriList.length
+      
+      // Reset to middle when reaching end
+      setTimeout(() => {
+        if (carousel.scrollLeft >= maxScroll - 10) {
+          carousel.scrollLeft = itemWidth * this.galeriList.length
+        }
+      }, 500)
+    },
+    scrollToGaleri(index) {
+      const carousel = this.$refs.galeriCarousel
+      if (!carousel) return
+      
+      const itemWidth = carousel.offsetWidth / 3 + 24
+      const targetScroll = itemWidth * (this.galeriList.length + index)
+      
+      carousel.scrollTo({ left: targetScroll, behavior: 'smooth' })
+      this.currentGaleriIndex = index
     }
   }
 }
@@ -602,14 +684,34 @@ export default {
   background: linear-gradient(180deg, #f8f8f8 0%, #FFF5F5 100%);
 }
 
-.galeri-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+/* Auto-scroll Carousel */
+.galeri-carousel {
   margin-top: 2rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  cursor: grab;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.galeri-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.galeri-carousel:active {
+  cursor: grabbing;
+}
+
+.galeri-track {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1rem 0;
 }
 
 .galeri-item {
+  min-width: calc((100% - 3rem) / 3);
   aspect-ratio: 4/3;
   border: none;
   border-radius: var(--radius-lg);
@@ -621,10 +723,11 @@ export default {
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
 .galeri-item:hover {
-  transform: scale(1.05);
+  transform: scale(1.03);
   box-shadow: 0 10px 30px rgba(196, 30, 58, 0.2);
 }
 
@@ -640,6 +743,33 @@ export default {
 
 .galeri-item p {
   color: var(--text-secondary);
+}
+
+/* Navigation Dots */
+.galeri-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.galeri-dots .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.galeri-dots .dot:hover {
+  background: rgba(196, 30, 58, 0.3);
+}
+
+.galeri-dots .dot.active {
+  background: var(--primary);
 }
 
 /* Testimoni Section - Red Background */

@@ -19,6 +19,11 @@
         <div class="contact-grid">
           <!-- Order Form -->
           <div class="form-section">
+            <div class="form-header">
+              <h3>📝 Form Pemesanan</h3>
+              <p>Isi data dibawah untuk melakukan pemesanan catering</p>
+            </div>
+
             <!-- Success Message -->
             <div v-if="successMessage" class="alert alert-success">
               {{ successMessage }}
@@ -346,6 +351,25 @@ export default {
   border-radius: var(--radius-lg);
   box-shadow: 0 10px 40px rgba(196, 30, 58, 0.1);
   border: none;
+}
+
+.form-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.form-header h3 {
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.form-header p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin: 0;
 }
 
 .form-group {

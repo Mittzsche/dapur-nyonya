@@ -215,7 +215,8 @@ export default {
         await this.loadGaleri()
       } catch (error) {
         console.error('Error saving galeri:', error)
-        alert('Gagal menyimpan gambar')
+        const errorMsg = error.response?.data?.message || 'Gagal menyimpan gambar'
+        alert(errorMsg)
       } finally {
         this.saving = false
       }
