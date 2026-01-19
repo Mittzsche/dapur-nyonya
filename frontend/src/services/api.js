@@ -1,8 +1,12 @@
 import axios from 'axios'
 
 // Base API configuration
+// Base API configuration
+const apiUrl = process.env.VUE_APP_API_URL || 'http://localhost:8000/api'
+const baseURL = apiUrl.endsWith('/api') ? apiUrl : `${apiUrl.replace(/\/$/, '')}/api`
+
 const api = axios.create({
-  baseURL: process.env.VUE_APP_API_URL || 'http://localhost:8000/api',
+  baseURL,
   timeout: 10000, // 10 seconds timeout
   headers: {
     'Content-Type': 'application/json',
@@ -28,11 +32,13 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      // Token expired or invalid
+    if (error.response?.status === 401 && !error.config.url.includes('/auth/login')) {
+      // Token expired or invalid (except for login page)
       localStorage.removeItem('admin_token')
       localStorage.removeItem('admin_user')
-      window.location.href = '/admin/login'
+      if (!window.location.pathname.includes('/admin/login')) {
+        window.location.href = '/admin/login'
+      }
     }
     return Promise.reject(error)
   }
