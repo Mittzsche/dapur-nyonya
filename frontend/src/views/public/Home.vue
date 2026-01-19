@@ -219,13 +219,18 @@ export default {
     }
   },
   async mounted() {
-    await Promise.all([
-      this.fetchLayanan(),
-      this.fetchGaleri(),
-      this.fetchTestimoni(),
-      this.fetchKonten()
-    ])
-    this.loading = false
+    try {
+      await Promise.allSettled([
+        this.fetchLayanan(),
+        this.fetchGaleri(),
+        this.fetchTestimoni(),
+        this.fetchKonten()
+      ])
+    } catch (error) {
+      console.error('Error mounting Home:', error)
+    } finally {
+      this.loading = false
+    }
     this.$nextTick(() => {
       this.initGaleriCarousel()
     })
