@@ -362,6 +362,8 @@ export default {
 /* Hero Section - Red Gradient Background */
 .hero {
   padding-top: 5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white;
 }
