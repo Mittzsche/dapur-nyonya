@@ -606,7 +606,7 @@ select.form-control {
   }
 
   .page-header {
-    padding: 6rem 0 2rem;
+    padding: 5rem 0 2rem;
   }
 
   .page-header h1 {
@@ -619,6 +619,52 @@ select.form-control {
 
   .jam-kerja {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header {
+    padding: 4rem 0 1.5rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .header-subtitle {
+    font-size: 0.95rem;
+    padding: 0 0.5rem;
+  }
+
+  .hubungi-section {
+    padding: 2rem 0;
+  }
+
+  .form-section {
+    padding: 1.25rem;
+  }
+
+  .form-header h3 {
+    font-size: 1.25rem;
+  }
+
+  .form-control {
+    padding: 0.85rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .btn-block {
+    padding: 0.9rem;
+    font-size: 1rem;
+  }
+
+  .info-card {
+    padding: 1.25rem;
+  }
+
+  .btn-whatsapp {
+    padding: 0.85rem 1.25rem;
+    font-size: 0.95rem;
   }
 }
 </style>

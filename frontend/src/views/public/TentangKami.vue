@@ -226,7 +226,7 @@ export default {
 
 @media (max-width: 768px) {
   .page-header {
-    padding: 6rem 0 2rem;
+    padding: 5rem 0 2rem;
   }
 
   .header-grid {
@@ -253,6 +253,45 @@ export default {
 
   .latar-box h2 {
     font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header {
+    padding: 4rem 0 1.5rem;
+  }
+
+  .header-text h1 {
+    font-size: 1.75rem;
+  }
+
+  .header-subtitle {
+    font-size: 0.95rem;
+    padding: 0 0.5rem;
+  }
+
+  .owner-image,
+  .owner-image-real {
+    width: 150px;
+    height: 190px;
+  }
+
+  .latar-belakang {
+    padding: 2rem 0;
+  }
+
+  .latar-box {
+    padding: 1.25rem;
+  }
+
+  .latar-box h2 {
+    font-size: 1.25rem;
+  }
+
+  .latar-box p,
+  .latar-box :deep(p) {
+    font-size: 0.95rem;
+    line-height: 1.7;
   }
 }
 </style>

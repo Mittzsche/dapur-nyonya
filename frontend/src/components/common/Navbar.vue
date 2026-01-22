@@ -169,13 +169,17 @@ export default {
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+  .navbar-container {
+    padding: 0.75rem 1rem;
+  }
+
   .navbar-toggle {
     display: block;
   }
 
   .navbar-menu {
     position: fixed;
-    top: 75px;
+    top: 70px;
     left: 0;
     right: 0;
     background: white;
@@ -198,6 +202,34 @@ export default {
   .nav-link {
     display: block;
     padding: 0.5rem 0;
+  }
+
+  .logo-box {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+}
+
+/* Extra Small Screens */
+@media (max-width: 480px) {
+  .navbar-container {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .navbar-menu {
+    top: 60px;
+    padding: 1rem;
+  }
+
+  .logo-box {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .hamburger {
+    width: 22px;
   }
 }
 </style>

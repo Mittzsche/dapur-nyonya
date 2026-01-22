@@ -208,11 +208,48 @@ export default {
   }
   
   .page-header {
-    padding: 6rem 0 2rem;
+    padding: 5rem 0 2rem;
   }
   
   .page-header h1 {
     font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header {
+    padding: 4rem 0 1.5rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .page-header p {
+    font-size: 0.95rem;
+    padding: 0 0.5rem;
+  }
+
+  .layanan-section {
+    padding: 2rem 0;
+  }
+
+  .layanan-content {
+    padding: 1rem;
+  }
+
+  .layanan-title {
+    font-size: 1.1rem;
+  }
+
+  .layanan-desc {
+    font-size: 0.9rem;
+    min-height: auto;
+  }
+
+  .btn-sm {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.85rem;
   }
 }
 </style>

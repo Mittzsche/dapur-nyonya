@@ -312,7 +312,7 @@ export default {
   }
 
   .page-header {
-    padding: 6rem 0 2rem;
+    padding: 5rem 0 2rem;
   }
 
   .page-header h1 {
@@ -323,6 +323,49 @@ export default {
     width: 40px;
     height: 40px;
     font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header {
+    padding: 4rem 0 1.5rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .page-header p {
+    font-size: 0.95rem;
+  }
+
+  .testimoni-section {
+    padding: 2rem 0;
+    min-height: 60vh;
+  }
+
+  .slider-container {
+    gap: 0.5rem;
+  }
+
+  .slider-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1.25rem;
+  }
+
+  .testimoni-caption {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .slider-dots {
+    margin-top: 1.5rem;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
   }
 }
 </style>

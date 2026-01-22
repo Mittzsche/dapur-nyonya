@@ -936,30 +936,128 @@ export default {
   .tentang-section::before {
     display: none;
   }
+
+  .galeri-item {
+    min-width: calc((100% - 1.5rem) / 2);
+  }
 }
 
 @media (max-width: 768px) {
+  .hero {
+    padding-top: 4rem;
+  }
+
   .hero-title {
     font-size: 2.5rem;
   }
   
+  .hero-motto {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+  
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0 1rem;
+  }
+
+  .hero-buttons .btn {
+    width: 100%;
+    max-width: 250px;
+  }
+  
   .hero-images {
     grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0 1rem;
   }
   
   .menu-grid,
-  .galeri-grid,
   .testimoni-grid {
     grid-template-columns: 1fr;
   }
   
   .section-full {
     min-height: auto;
-    padding: 4rem 0;
+    padding: 3rem 0;
   }
   
   .section-title {
+    font-size: 1.75rem;
+  }
+
+  .galeri-item {
+    min-width: 80%;
+  }
+
+  .pesan-btn {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding-top: 3.5rem;
+  }
+
+  .hero-title {
     font-size: 2rem;
+  }
+
+  .hero-motto {
+    font-size: 0.95rem;
+  }
+
+  .logo-placeholder,
+  .logo-image {
+    width: 90px;
+    height: 90px;
+  }
+
+  .logo-placeholder {
+    font-size: 2.5rem;
+  }
+
+  .hero-buttons {
+    gap: 0.5rem;
+  }
+
+  .hero-buttons .btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .btn-outline-dark {
+    padding: 0.6rem 1.5rem;
+  }
+
+  .section-full {
+    padding: 2rem 0;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .menu-card .btn-outline {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.85rem;
+  }
+
+  .galeri-item {
+    min-width: 90%;
+  }
+
+  .testimoni-grid {
+    gap: 1rem;
+  }
+
+  .pesan-btn {
+    padding: 0.9rem 2rem;
+    font-size: 1rem;
   }
 }
 </style>
