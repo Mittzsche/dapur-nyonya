@@ -1059,6 +1059,45 @@ export default {
     padding: 0.9rem 2rem;
     font-size: 1rem;
   }
+
+  /* Hero banners - make larger on mobile */
+  .hero-images {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    padding: 0 0.5rem;
+    max-width: 100%;
+  }
+
+  .hero-image-box {
+    aspect-ratio: 1/1;
+    border-width: 2px;
+  }
+
+  .hero-image-box span {
+    font-size: 2rem;
+  }
+
+  .hero-image-box p {
+    font-size: 0.75rem;
+  }
+
+  /* Cara Pemesanan - make larger on mobile */
+  .cara-pemesanan-box {
+    padding: 0 0.5rem;
+  }
+
+  .panduan-image {
+    aspect-ratio: 4/3;
+    min-height: 200px;
+  }
+
+  .panduan-image span {
+    font-size: 3rem;
+  }
+
+  .panduan-image p {
+    font-size: 0.9rem;
+  }
 }
 </style>
 

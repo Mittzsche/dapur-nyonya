@@ -218,7 +218,7 @@ export default {
   }
 
   .navbar-menu {
-    top: 60px;
+    top: 52px;
     padding: 1rem;
   }
 
