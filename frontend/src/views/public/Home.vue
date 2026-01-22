@@ -367,7 +367,7 @@ export default {
 }
 
 .hero .container {
-  width: 100%;
+  /* Let container use its default max-width and padding */
 }
 
 .hero-content {
