@@ -373,7 +373,7 @@ export default {
 .hero-content {
   text-align: center;
   margin-bottom: 3rem;
-  padding: 0 1rem;
+  padding: 0 1.5rem;
 }
 
 .hero-logo {
