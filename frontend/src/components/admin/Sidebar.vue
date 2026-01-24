@@ -10,7 +10,9 @@
     <!-- Sidebar -->
     <aside class="sidebar" :class="{ 'is-open': isOpen }">
       <div class="sidebar-header">
-        <h2>🍽️ Dapur Nyonya</h2>
+        <div class="logo-container">
+          <img :src="sidebarLogo" alt="Dapur Nyonya" class="logo-img">
+        </div>
         <p>Admin Panel</p>
         <button class="close-btn" @click="$emit('close')">✕</button>
       </div>
@@ -36,6 +38,7 @@
 
 <script>
 import authService from '@/services/authService'
+import dapurNyonyaLogo from '@/assets/dapur-nyonya-logo.png'
 
 export default {
   name: 'Sidebar',
@@ -43,6 +46,11 @@ export default {
     isOpen: {
       type: Boolean,
       default: false
+    }
+  },
+  data() {
+    return {
+      sidebarLogo: dapurNyonyaLogo
     }
   },
   methods: {
@@ -81,6 +89,18 @@ export default {
 .sidebar-header h2 {
   font-size: 1.25rem;
   margin-bottom: 0.25rem;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.logo-img {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
 }
 
 .sidebar-header p {
