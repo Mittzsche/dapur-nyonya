@@ -18,23 +18,7 @@
       <div v-if="activeTab === 'home'" class="content-form">
         <h3 class="form-section-title">Gambar Halaman Beranda</h3>
         
-        <!-- Logo -->
-        <div class="form-group">
-          <label class="form-label">Logo (100x100)</label>
-          <div class="image-upload">
-            <div v-if="homeLogoPreview || form.home_logo" class="image-preview small">
-              <img :src="homeLogoPreview || getImageUrl(form.home_logo)" alt="Logo">
-            </div>
-            <div v-else class="image-placeholder small">
-              <span>🍽️</span>
-            </div>
-            <input type="file" @change="e => handleImage(e, 'homeLogo')" accept="image/*" ref="homeLogoInput" style="display:none">
-            <div class="upload-actions">
-              <button type="button" class="btn btn-outline" @click="$refs.homeLogoInput.click()">Pilih File</button>
-              <small class="file-name" v-if="homeLogoFile">{{ homeLogoFile.name }}</small>
-            </div>
-          </div>
-        </div>
+
 
         <!-- Hero Banner 1 -->
         <div class="form-group">
@@ -185,7 +169,7 @@ export default {
         subtitle: '',
         owner_image: '',
         latar_belakang: '',
-        home_logo: '',
+        // home_logo removed
         home_hero_1: '',
         home_hero_2: '',
         home_tentang_image: '',
@@ -193,8 +177,8 @@ export default {
       },
       ownerImagePreview: null,
       ownerImageFile: null,
-      homeLogoPreview: null,
-      homeLogoFile: null,
+      // homeLogo removed
+      heroBanner1Preview: null,
       heroBanner1Preview: null,
       heroBanner1File: null,
       heroBanner2Preview: null,
@@ -218,7 +202,7 @@ export default {
         if (konten.tentang_subtitle) this.form.subtitle = konten.tentang_subtitle.value
         if (konten.tentang_owner_image) this.form.owner_image = konten.tentang_owner_image.value
         if (konten.tentang_latar_belakang) this.form.latar_belakang = konten.tentang_latar_belakang.value
-        if (konten.home_logo) this.form.home_logo = konten.home_logo.value
+        // home_logo removed
         if (konten.home_hero_1) this.form.home_hero_1 = konten.home_hero_1.value
         if (konten.home_hero_2) this.form.home_hero_2 = konten.home_hero_2.value
         if (konten.home_tentang_image) this.form.home_tentang_image = konten.home_tentang_image.value
@@ -237,7 +221,6 @@ export default {
       
       const fileMap = {
         'ownerImage': ['ownerImageFile', 'ownerImagePreview'],
-        'homeLogo': ['homeLogoFile', 'homeLogoPreview'],
         'heroBanner1': ['heroBanner1File', 'heroBanner1Preview'],
         'heroBanner2': ['heroBanner2File', 'heroBanner2Preview'],
         'tentangImage': ['tentangImageFile', 'tentangImagePreview'],
@@ -261,7 +244,6 @@ export default {
 
       try {
         const uploads = [
-          ['home_logo', this.homeLogoFile],
           ['home_hero_1', this.heroBanner1File],
           ['home_hero_2', this.heroBanner2File],
           ['home_tentang_image', this.tentangImageFile],
@@ -275,7 +257,6 @@ export default {
         }
         
         // Reset files logic handles implicitly by reload or manual reset
-        this.homeLogoFile = null
         this.heroBanner1File = null
         this.heroBanner2File = null
         this.tentangImageFile = null
