@@ -3,7 +3,10 @@
     <div class="container navbar-container">
       <!-- Logo -->
       <router-link to="/" class="navbar-brand">
-        <div class="logo-box">🍽️</div>
+        <div class="logo-box">
+          <img v-if="navLogo" :src="getImageUrl(navLogo)" alt="Logo Dapur Nyonya" class="logo-img">
+          <span v-else>🍽️</span>
+        </div>
       </router-link>
 
       <!-- Mobile Menu Toggle -->
@@ -27,16 +30,20 @@
 </template>
 
 <script>
+import kontenService from '@/services/kontenService'
+
 export default {
   name: 'Navbar',
   data() {
     return {
       isScrolled: false,
-      isMenuOpen: false
+      isMenuOpen: false,
+      navLogo: null
     }
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll)
+    this.fetchLogo()
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll)
@@ -47,6 +54,23 @@ export default {
     },
     closeMenu() {
       this.isMenuOpen = false
+    },
+    async fetchLogo() {
+      try {
+        const response = await kontenService.getAll()
+        const konten = response.data.data
+        if (konten.home_logo && konten.home_logo.value) {
+          this.navLogo = konten.home_logo.value
+        }
+      } catch (error) {
+        console.error('Error fetching logo:', error)
+      }
+    },
+    getImageUrl(path) {
+      if (!path) return ''
+      if (path.startsWith('http')) return path
+      const baseUrl = 'https://dapur-nyonya-production.up.railway.app'
+      return `${baseUrl}/storage/${path}`
     }
   }
 }
@@ -88,6 +112,18 @@ export default {
   justify-content: center;
   font-size: 1.5rem;
   background: #f9f9f9;
+  overflow: hidden;
+}
+
+.logo-box:has(.logo-img) {
+  border: none;
+  background: transparent;
+}
+
+.logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .navbar-menu {
