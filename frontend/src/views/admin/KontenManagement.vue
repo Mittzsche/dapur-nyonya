@@ -179,7 +179,6 @@ export default {
       ownerImageFile: null,
       // homeLogo removed
       heroBanner1Preview: null,
-      heroBanner1Preview: null,
       heroBanner1File: null,
       heroBanner2Preview: null,
       heroBanner2File: null,

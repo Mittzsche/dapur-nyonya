@@ -47,7 +47,7 @@
             </p>
 
             <p>
-              Kami menawarkan beragam pilihan menu Nusantara dan internasional yang dikreasikan dengan perpaduan bahan 
+              Kami menawarkan beragam pilihan menu Nusantara maupun internasional yang dikreasikan dengan perpaduan bahan 
               berkualitas tinggi dan bumbu pilihan khas Dapur Nyonya. Setiap sajian diolah dengan teliti untuk menghasilkan 
               rasa yang autentik dan tampilan yang menarik, sehingga memberikan kesan istimewa bagi para tamu yang hadir.
             </p>
