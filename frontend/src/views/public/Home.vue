@@ -1000,9 +1000,9 @@ export default {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .hero {
-    padding-top: 6.5rem; /* Lebih jauh dari navbar di mobile */
+    padding-top: 8rem !important; /* Force padding lebih besar untuk mobile/tablet */
   }
 
   .hero-title {
