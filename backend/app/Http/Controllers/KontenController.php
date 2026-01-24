@@ -108,29 +108,38 @@ class KontenController extends Controller
 
     /**
      * Seed default content (One-time use, public access for initial setup)
-     * This endpoint will only work if content table is empty
+     * Add ?force=1 to force re-seed even if data exists
      */
-    public function seedDefaults(): JsonResponse
+    public function seedDefaults(Request $request): JsonResponse
     {
-        // Safety check: only run if content is empty
+        $force = $request->query('force', '0') === '1';
+        
+        // Safety check: only run if content is empty (unless forced)
         $existingCount = Konten::count();
         
-        if ($existingCount > 0) {
+        if ($existingCount > 0 && !$force) {
             return response()->json([
                 'success' => false,
-                'message' => 'Konten sudah ada di database. Seeder tidak dijalankan untuk keamanan.',
+                'message' => 'Konten sudah ada di database. Tambahkan ?force=1 untuk re-seed.',
                 'existing_count' => $existingCount,
             ], 400);
+        }
+
+        // Truncate if forcing
+        if ($force) {
+            Konten::truncate();
         }
 
         // Run the seeder
         try {
             \Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\KontenSeeder']);
             
+            $allKonten = Konten::all()->keyBy('key');
+            
             return response()->json([
                 'success' => true,
-                'message' => 'Konten default berhasil di-seed!',
-                'data' => Konten::all()->keyBy('key'),
+                'message' => 'Konten default berhasil di-seed! Total: ' . $allKonten->count(),
+                'data' => $allKonten,
             ]);
         } catch (\Exception $e) {
             return response()->json([
