@@ -6,7 +6,7 @@
         <div class="hero-content">
           <div class="hero-logo">
             <div v-if="heroLogo" class="logo-image">
-              <img :src="getImageUrl(heroLogo)" alt="Logo Dapur Nyonya">
+              <img :src="heroLogo" alt="Logo Dapur Nyonya">
             </div>
             <div v-else class="logo-placeholder">🍽️</div>
           </div>
@@ -189,6 +189,7 @@ import layananService from '@/services/layananService'
 import galeriService from '@/services/galeriService'
 import testimoniService from '@/services/testimoniService'
 import kontenService from '@/services/kontenService'
+import dapurNyonyaLogo from '@/assets/dapur-nyonya-logo.png'
 
 export default {
   name: 'Home',
@@ -197,7 +198,7 @@ export default {
       layananList: [],
       galeriList: [],
       testimoniList: [],
-      heroLogo: '',
+      heroLogo: dapurNyonyaLogo,
       heroBanner1: '',
       heroBanner2: '',
       tentangImage: '',
