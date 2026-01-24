@@ -364,7 +364,7 @@ export default {
 
 /* Hero Section - Red Gradient Background */
 .hero {
-  padding-top: 5rem;
+  padding-top: 6rem; /* Tambah spacing dari navbar */
   padding-left: 1rem;
   padding-right: 1rem;
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
@@ -1015,11 +1015,8 @@ export default {
 
   .logo-placeholder,
   .logo-image {
-    width: 150px;
+    width: 180px;
     height: auto;
-  }
-
-  .logo-image {
   }
 
   .logo-placeholder {
