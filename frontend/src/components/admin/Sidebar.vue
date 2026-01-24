@@ -22,7 +22,7 @@
         <router-link to="/admin/produk" class="nav-item" @click="$emit('close')">📦 Produk</router-link>
         <router-link to="/admin/pemesanan" class="nav-item" @click="$emit('close')">📋 Pemesanan</router-link>
         <router-link to="/admin/penjualan" class="nav-item" @click="$emit('close')">💰 Penjualan</router-link>
-        <router-link to="/admin/mitra" class="nav-item" @click="$emit('close')">🤝 Mitra</router-link>
+
         <div class="nav-divider"></div>
         <router-link to="/admin/konten" class="nav-item" @click="$emit('close')">📝 Konten</router-link>
         <router-link to="/admin/testimoni" class="nav-item" @click="$emit('close')">💬 Testimoni</router-link>
