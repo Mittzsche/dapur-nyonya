@@ -6,7 +6,7 @@
         <div class="hero-content">
           <div class="hero-logo">
             <div v-if="heroLogo" class="logo-image">
-              <img :src="heroLogo" alt="Logo Dapur Nyonya">
+              <img :src="../assets/dapurNyonyaLogo" alt="Logo Dapur Nyonya">
             </div>
             <div v-else class="logo-placeholder">🍽️</div>
           </div>
@@ -398,22 +398,14 @@ export default {
 }
 
 .logo-image {
-  width: 120px;
-  height: 120px;
+  width: 200px;
+  height: auto;
   margin: 0 auto;
-  overflow: hidden;
-  border-radius: 50%;
-  border: 3px solid rgba(255,255,255,0.5);
-  background: white;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .logo-image img {
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: contain;
 }
 
@@ -1021,12 +1013,11 @@ export default {
 
   .logo-placeholder,
   .logo-image {
-    width: 90px;
-    height: 90px;
+    width: 150px;
+    height: auto;
   }
 
   .logo-image {
-    padding: 8px;
   }
 
   .logo-placeholder {
