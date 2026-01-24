@@ -80,3 +80,19 @@ Route::get('/fix-storage-link', function () {
         return "CRITICAL ERROR: " . $e->getMessage();
     }
 });
+
+// Serve storage files directly (bypass symlink for Railway ephemeral filesystem)
+Route::get('/storage/{path}', function ($path) {
+    $storagePath = storage_path('app/public/' . $path);
+    
+    if (!file_exists($storagePath)) {
+        abort(404, 'File not found');
+    }
+    
+    $mimeType = mime_content_type($storagePath);
+    
+    return response()->file($storagePath, [
+        'Content-Type' => $mimeType,
+        'Cache-Control' => 'public, max-age=31536000',
+    ]);
+})->where('path', '.*');
