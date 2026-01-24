@@ -42,6 +42,10 @@ Route::post('/pemesanan', [PemesananController::class, 'store']);
 Route::get('/konten', [KontenController::class, 'index']);
 Route::get('/konten/{key}', [KontenController::class, 'show']);
 
+// Seed konten default (one-time setup, public access)
+// This will only work if konten table is empty for safety
+Route::get('/konten-seed-defaults', [KontenController::class, 'seedDefaults']);
+
 // Testimoni publik
 Route::get('/testimoni', [TestimoniController::class, 'index']);
 

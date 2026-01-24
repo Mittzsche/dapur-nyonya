@@ -105,4 +105,38 @@ class KontenController extends Controller
             'message' => 'Konten berhasil diupdate',
         ]);
     }
+
+    /**
+     * Seed default content (One-time use, public access for initial setup)
+     * This endpoint will only work if content table is empty
+     */
+    public function seedDefaults(): JsonResponse
+    {
+        // Safety check: only run if content is empty
+        $existingCount = Konten::count();
+        
+        if ($existingCount > 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Konten sudah ada di database. Seeder tidak dijalankan untuk keamanan.',
+                'existing_count' => $existingCount,
+            ], 400);
+        }
+
+        // Run the seeder
+        try {
+            \Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\KontenSeeder']);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Konten default berhasil di-seed!',
+                'data' => Konten::all()->keyBy('key'),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error running seeder: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
 }
