@@ -1024,6 +1024,10 @@ export default {
     height: 90px;
   }
 
+  .logo-image {
+    padding: 8px;
+  }
+
   .logo-placeholder {
     font-size: 2.5rem;
   }
