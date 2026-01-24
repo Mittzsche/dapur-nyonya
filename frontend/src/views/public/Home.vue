@@ -6,7 +6,7 @@
         <div class="hero-content">
           <div class="hero-logo">
             <div v-if="heroLogo" class="logo-image">
-              <img :src="../assets/dapurNyonyaLogo" alt="Logo Dapur Nyonya">
+              <img :src="heroLogo" alt="Logo Dapur Nyonya">
             </div>
             <div v-else class="logo-placeholder">🍽️</div>
           </div>
