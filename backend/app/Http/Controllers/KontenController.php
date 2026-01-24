@@ -148,4 +148,57 @@ class KontenController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Direct seed without Artisan (alternative method if seeder fails)
+     */
+    public function seedDirect(Request $request): JsonResponse
+    {
+        $force = $request->query('force', '0') === '1';
+        
+        $existingCount = Konten::count();
+        if ($existingCount > 0 && !$force) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data sudah ada. Gunakan ?force=1 untuk re-seed.',
+                'existing_count' => $existingCount,
+            ], 400);
+        }
+
+        if ($force) {
+            Konten::truncate();
+        }
+
+        try {
+            $kontenData = [
+                ['key' => 'home_logo', 'value' => '', 'type' => 'image'],
+                ['key' => 'home_hero_1', 'value' => '', 'type' => 'image'],
+                ['key' => 'home_hero_2', 'value' => '', 'type' => 'image'],
+                ['key' => 'home_tentang_image', 'value' => '', 'type' => 'image'],
+                ['key' => 'home_cara_pemesanan', 'value' => '', 'type' => 'image'],
+                ['key' => 'contact_phone', 'value' => '+62 812-3456-7890', 'type' => 'text'],
+                ['key' => 'contact_email', 'value' => 'info@dapurnyonya.com', 'type' => 'text'],
+                ['key' => 'contact_address', 'value' => 'Sukabumi, Jawa Barat, Indonesia', 'type' => 'text'],
+                ['key' => 'contact_whatsapp', 'value' => '6281234567890', 'type' => 'text'],
+            ];
+
+            foreach ($kontenData as $data) {
+                Konten::create($data);
+            }
+
+            $allKonten = Konten::all()->keyBy('key');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data konten berhasil di-insert langsung! Total: ' . $allKonten->count(),
+                'data' => $allKonten,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error inserting data: ' . $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ], 500);
+        }
+    }
 }
