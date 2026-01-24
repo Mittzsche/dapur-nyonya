@@ -268,7 +268,8 @@ export default {
       try {
         const response = await kontenService.getAll()
         const konten = response.data.data
-        if (konten.home_logo) this.heroLogo = konten.home_logo.value
+        // Hanya overwrite heroLogo jika value dari API tidak kosong
+        if (konten.home_logo && konten.home_logo.value) this.heroLogo = konten.home_logo.value
         if (konten.home_hero_1) this.heroBanner1 = konten.home_hero_1.value
         if (konten.home_hero_2) this.heroBanner2 = konten.home_hero_2.value
         if (konten.home_tentang_image) this.tentangImage = konten.home_tentang_image.value
