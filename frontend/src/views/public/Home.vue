@@ -1002,7 +1002,7 @@ export default {
 
 @media (max-width: 480px) {
   .hero {
-    padding-top: 5rem; /* Lebih jauh dari navbar di mobile */
+    padding-top: 6.5rem; /* Lebih jauh dari navbar di mobile */
   }
 
   .hero-title {
